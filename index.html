@@ -17,7 +17,7 @@
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Noto Sans TC','Outfit',sans-serif;background:var(--bg);min-height:100vh;color:var(--gray-800);line-height:1.7}
-.app{max-width:720px;margin:0 auto;padding:20px 16px 160px}
+.app{max-width:720px;margin:0 auto;padding:20px 16px 80px}
 .header{text-align:center;padding:32px 0 24px}
 .header h1{font-family:'Outfit','Noto Sans TC',sans-serif;font-size:28px;font-weight:700;color:var(--cover);text-shadow:0 1px 4px rgba(0,0,0,0.06)}
 .header p{font-size:16px;color:var(--gray-700);margin-top:6px;font-weight:600}
@@ -989,49 +989,6 @@ let _tapCount=0,_tapTimer=null;
 function secretReset(){_tapCount++;if(_tapTimer)clearTimeout(_tapTimer);_tapTimer=setTimeout(()=>{_tapCount=0},2000);if(_tapCount>=5){if(confirm("確定要清除所有測試資料嗎？")){localStorage.removeItem("socialai_exp_v1");_tapCount=0;alert("資料已清除");location.reload()}}}
 loadState();
 function handleLogout(){document.getElementById('fb-video').src='';showPage('page-login');document.getElementById('login-id1').value='';document.getElementById('login-id2').value='';document.getElementById('login-id2-group').style.display='none';document.getElementById('login-error').classList.remove('show');loginStep=1}
-
-// ===== DEV PREVIEW MODE =====
-// Fake state for preview
-function devPreview(page){
-  state={studentId:'PREVIEW',group:'experiment',name:'預覽模式',gender:'不想回答',birth:'2003',dept:'測試系',grade:'大三',spending:'5001-10000',ai_familiarity:'3',ai_tool:'ChatGPT',ai_freq:'每週數次',consented:true,consent_time:new Date().toISOString(),pretest:{SE1:5,SE2:4,SE3:6,IA1:3,IA2:2,IA3:4,IA4:3},pretest_time:new Date().toISOString(),stages:{0:{time:new Date().toISOString()}}};
-  if(page==='dashboard'){renderDashboard();showPage('page-dashboard')}
-  else if(page==='feedback'){state.stages={0:{time:new Date().toISOString()}};renderDashboard();openFeedback(1)}
-  else if(page==='feedback-chat'){
-    state.stages={0:{time:new Date().toISOString()}};openFeedback(1);
-    setTimeout(()=>{
-      document.getElementById('fb-conclusion').value='我們選擇筆電類別，核心痛點是舊筆電跑不動統計軟體，理想狀態是能順暢跑 R Studio 和剪片軟體';
-      previewConclusion();
-      setTimeout(()=>{sendToAI()},800);
-    },300);
-  }
-  else if(page==='pretest'){renderSurvey('pretest-items',PRETEST,'pre_');showPage('page-pretest')}
-  else if(page==='posttest'){renderSurvey('posttest-items',POSTTEST,'post_');showPage('page-posttest')}
-  else if(page==='thankyou'){showPage('page-thankyou')}
-  else if(page==='consent'){showPage('page-consent')}
-  else if(page==='demo'){showPage('page-demo')}
-}
-
-// Dev nav bar
-(function(){
-  const nav=document.createElement('div');
-  nav.style.cssText='position:fixed;bottom:0;left:0;right:0;background:#266E97;padding:10px 12px;display:flex;gap:6px;flex-wrap:wrap;justify-content:center;z-index:10000;box-shadow:0 -2px 8px rgba(0,0,0,0.2)';
-  const pages=[
-    ['登入','page-login'],['同意書','consent'],['基本資料','demo'],['前測','pretest'],
-    ['總覽','dashboard'],['回饋+聊天室','feedback-chat'],['後測','posttest']
-  ];
-  pages.forEach(([label,page])=>{
-    const btn=document.createElement('button');
-    btn.textContent=label;
-    btn.style.cssText='background:#fff;color:#266E97;border:none;border-radius:8px;padding:8px 14px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit';
-    btn.onclick=()=>{if(page==='page-login')showPage('page-login');else devPreview(page)};
-    nav.appendChild(btn);
-  });
-  const note=document.createElement('div');
-  note.textContent='⚠️ 開發預覽列（正式版會移除）';
-  note.style.cssText='width:100%;text-align:center;font-size:11px;color:rgba(255,255,255,0.7);margin-top:4px';
-  nav.appendChild(note);
-  document.body.appendChild(nav);
-})();
 </script>
 </body>
 </html>

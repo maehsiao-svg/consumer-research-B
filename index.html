@@ -406,8 +406,8 @@ body{font-family:'Noto Sans TC','Outfit',sans-serif;background:var(--bg);min-hei
 <script>
 // ===== PLACEHOLDER: 版面預覽用，無實際後端功能 =====
 const LIKERT_N=7;
-const API_KEY='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';
-const SHEET_URL=''; // 之後填入
+const API_KEY=''; // 不需要，透過 Apps Script 呼叫
+const SHEET_URL='https://script.google.com/macros/s/AKfycbwfdUbdOzph6jk9avhWVnzUus_Lf16kcCdmGQkzNGZYnIOO4_iQ2zcxWI-_xbd9TS2Klg/exec';
 
 // 8 personas
 const PERSONAS=[
@@ -531,7 +531,21 @@ function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.
 function selR(el,gid){document.querySelectorAll('#'+gid+' .radio-option').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');el.querySelector('input').checked=true}
 function selL(btn){btn.parentElement.querySelectorAll('.likert-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected')}
 function showSyncStatus(msg,type){const el=document.getElementById('sync-status');el.textContent=msg;el.className='sync-status '+(type==='ok'?'sync-ok':'sync-fail');el.style.opacity='1';setTimeout(()=>{el.style.opacity='0'},3000)}
-function sendToSheet(d){/* placeholder */showSyncStatus('✓ 資料已儲存（預覽模式）','ok')}
+function sendToSheet(d){
+  if(!SHEET_URL)return;
+  try{
+    var data=JSON.stringify(d);
+    var beaconSent=false;
+    if(navigator.sendBeacon){beaconSent=navigator.sendBeacon(SHEET_URL,new Blob([data],{type:'text/plain'}))}
+    if(beaconSent){showSyncStatus('✓ 資料已送出','ok');return}
+    var iframe=document.createElement('iframe');iframe.name='gas_'+Date.now();iframe.style.display='none';document.body.appendChild(iframe);
+    var form=document.createElement('form');form.method='POST';form.action=SHEET_URL;form.target=iframe.name;
+    var input=document.createElement('input');input.type='hidden';input.name='data';input.value=data;form.appendChild(input);
+    document.body.appendChild(form);form.submit();
+    showSyncStatus('✓ 資料已送出','ok');
+    setTimeout(()=>{form.remove();iframe.remove()},5000);
+  }catch(err){showSyncStatus('✗ 傳送失敗','fail')}
+}
 function leaveFeedback(){document.getElementById('fb-video').src='';showPage('page-dashboard')}
 
 // ===== LOGIN =====
@@ -785,48 +799,75 @@ ${personaDesc}
 
   const userMsg=`我們小組的結論是：「${conclusion}」\n\n這是「${stageInfo.title}」階段的任務。請 8 位成員各給出 2 則回饋。`;
 
-  // Call Claude API
-  fetch('https://api.anthropic.com/v1/messages',{
+  // Call Claude API via Apps Script proxy
+  fetch(SHEET_URL,{
     method:'POST',
-    headers:{
-      'Content-Type':'application/json',
-      'x-api-key':API_KEY,
-      'anthropic-version':'2023-06-01',
-      'anthropic-dangerous-direct-browser-access':'true'
-    },
+    mode:'no-cors',
+    headers:{'Content-Type':'text/plain'},
     body:JSON.stringify({
-      model:'claude-sonnet-4-6',
-      max_tokens:4000,
-      system:systemPrompt,
-      messages:[{role:'user',content:userMsg}]
+      type:'ai_request',
+      systemPrompt:systemPrompt,
+      userMessage:userMsg
     })
   })
-  .then(r=>{
-    if(!r.ok)return r.text().then(t=>{throw new Error('API '+r.status+': '+t.substring(0,200))});
-    return r.json();
-  })
-  .then(data=>{
-    const text=data.content.map(c=>c.text||'').join('');
-    const jsonMatch=text.match(/\[[\s\S]*\]/);
-    if(!jsonMatch)throw new Error('無法解析 AI 回覆 JSON');
-    const responses=JSON.parse(jsonMatch[0]);
-    const mapped=responses.map(r=>{
-      const persona=PERSONAS.find(p=>p.name===r.persona)||PERSONAS[0];
-      return {persona,text:r.text};
-    });
-    showSyncStatus('✓ AI 回覆成功','ok');
-    displayAIResponses(mapped);
+  .then(r=>r.text())
+  .then(raw=>{
+    // no-cors returns opaque, try form-based approach instead
+    throw new Error('use_form');
   })
   .catch(err=>{
-    console.error('AI API error:',err);
-    // Show error detail as alert for debugging
-    alert('AI API 錯誤（測試用提示）：\n'+err.message+'\n\n將使用備用回覆。');
-    const mockResponses=PERSONAS.flatMap(p=>[
-      {persona:p,text:`從${p.style}的角度來看，你們的結論「${conclusion.substring(0,20)}...」有它的道理。我覺得判斷方向是對的，值得繼續深入探索。`},
-      {persona:p,text:`不過身為${p.style}，我會比較擔心這個選擇可能忽略了一些重要的面向，建議你們再從其他角度想想看。`},
-    ]);
-    displayAIResponses(mockResponses);
-    showSyncStatus('⚠ AI連線：'+err.message,'fail');
+    // Use form + iframe approach for Apps Script
+    var reqId='ai_'+Date.now();
+    var iframe=document.createElement('iframe');
+    iframe.name=reqId;iframe.style.display='none';
+    document.body.appendChild(iframe);
+
+    // For AI request, we need the response, so use a different approach
+    // Post via fetch with redirect
+    var formData=new FormData();
+    formData.append('data',JSON.stringify({
+      type:'ai_request',
+      systemPrompt:systemPrompt,
+      userMessage:userMsg
+    }));
+
+    fetch(SHEET_URL,{
+      method:'POST',
+      body:new URLSearchParams({data:JSON.stringify({
+        type:'ai_request',
+        systemPrompt:systemPrompt,
+        userMessage:userMsg
+      })})
+    })
+    .then(r=>r.text())
+    .then(raw=>{
+      try{
+        var data=JSON.parse(raw);
+        if(data.status==='ok'&&data.ai_response){
+          var jsonMatch=data.ai_response.match(/\[[\s\S]*\]/);
+          if(!jsonMatch)throw new Error('無法解析 AI 回覆');
+          var responses=JSON.parse(jsonMatch[0]);
+          var mapped=responses.map(function(r){
+            var persona=PERSONAS.find(function(p){return p.name===r.persona})||PERSONAS[0];
+            return {persona:persona,text:r.text};
+          });
+          showSyncStatus('✓ AI 回覆成功','ok');
+          displayAIResponses(mapped);
+        }else{
+          throw new Error(data.message||'AI 回覆失敗');
+        }
+      }catch(e){throw e}
+    })
+    .catch(err2=>{
+      console.error('AI error:',err2);
+      var mockResponses=PERSONAS.flatMap(p=>[
+        {persona:p,text:`從${p.style}的角度來看，你們的結論「${conclusion.substring(0,20)}...」有它的道理。我覺得判斷方向是對的，值得繼續深入探索。`},
+        {persona:p,text:`不過身為${p.style}，我會比較擔心這個選擇可能忽略了一些重要的面向，建議你們再從其他角度想想看。`},
+      ]);
+      displayAIResponses(mockResponses);
+      showSyncStatus('⚠ AI：'+err2.message,'fail');
+    });
+    iframe.remove();
   });
 }
 

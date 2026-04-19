@@ -795,13 +795,16 @@ ${personaDesc}
       'anthropic-dangerous-direct-browser-access':'true'
     },
     body:JSON.stringify({
-      model:'claude-sonnet-4-20250514',
+      model:'claude-sonnet-4-6',
       max_tokens:4000,
       system:systemPrompt,
       messages:[{role:'user',content:userMsg}]
     })
   })
-  .then(r=>{if(!r.ok)throw new Error('API error: '+r.status);return r.json()})
+  .then(r=>{
+    if(!r.ok)return r.json().then(j=>{throw new Error('API '+r.status+': '+(j.error?.message||JSON.stringify(j)))});
+    return r.json();
+  })
   .then(data=>{
     const text=data.content.map(c=>c.text||'').join('');
     // Parse JSON from response
@@ -823,7 +826,7 @@ ${personaDesc}
       {persona:p,text:`不過身為${p.style}，我會比較擔心這個選擇可能忽略了一些重要的面向，建議你們再從其他角度想想看。`},
     ]);
     displayAIResponses(mockResponses);
-    showSyncStatus('⚠ AI 連線失敗，使用備用回覆','fail');
+    showSyncStatus('⚠ AI連線：'+err.message,'fail');
   });
 }
 

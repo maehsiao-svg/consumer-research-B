@@ -17,7 +17,7 @@
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Noto Sans TC','Outfit',sans-serif;background:var(--bg);min-height:100vh;color:var(--gray-800);line-height:1.7}
-.app{max-width:720px;margin:0 auto;padding:20px 16px 120px}
+.app{max-width:720px;margin:0 auto;padding:20px 16px 160px}
 .header{text-align:center;padding:32px 0 24px}
 .header h1{font-family:'Outfit','Noto Sans TC',sans-serif;font-size:28px;font-weight:700;color:var(--cover);text-shadow:0 1px 4px rgba(0,0,0,0.06)}
 .header p{font-size:16px;color:var(--gray-700);margin-top:6px;font-weight:600}
@@ -802,25 +802,25 @@ ${personaDesc}
     })
   })
   .then(r=>{
-    if(!r.ok)return r.json().then(j=>{throw new Error('API '+r.status+': '+(j.error?.message||JSON.stringify(j)))});
+    if(!r.ok)return r.text().then(t=>{throw new Error('API '+r.status+': '+t.substring(0,200))});
     return r.json();
   })
   .then(data=>{
     const text=data.content.map(c=>c.text||'').join('');
-    // Parse JSON from response
     const jsonMatch=text.match(/\[[\s\S]*\]/);
-    if(!jsonMatch)throw new Error('Invalid JSON response');
+    if(!jsonMatch)throw new Error('無法解析 AI 回覆 JSON');
     const responses=JSON.parse(jsonMatch[0]);
-    // Map to persona objects
     const mapped=responses.map(r=>{
       const persona=PERSONAS.find(p=>p.name===r.persona)||PERSONAS[0];
       return {persona,text:r.text};
     });
+    showSyncStatus('✓ AI 回覆成功','ok');
     displayAIResponses(mapped);
   })
   .catch(err=>{
     console.error('AI API error:',err);
-    // Fallback to mock responses
+    // Show error detail as alert for debugging
+    alert('AI API 錯誤（測試用提示）：\n'+err.message+'\n\n將使用備用回覆。');
     const mockResponses=PERSONAS.flatMap(p=>[
       {persona:p,text:`從${p.style}的角度來看，你們的結論「${conclusion.substring(0,20)}...」有它的道理。我覺得判斷方向是對的，值得繼續深入探索。`},
       {persona:p,text:`不過身為${p.style}，我會比較擔心這個選擇可能忽略了一些重要的面向，建議你們再從其他角度想想看。`},

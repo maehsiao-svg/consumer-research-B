@@ -34,6 +34,9 @@ body{font-family:'Noto Sans TC','Outfit',sans-serif;background:var(--bg);min-hei
 .form-input{width:100%;padding:12px 14px;border:1.5px solid var(--gray-200);border-radius:10px;font-size:16px;font-family:inherit;background:#fff;transition:border-color .2s,box-shadow .2s;outline:none}
 .form-input:focus{border-color:var(--c1);box-shadow:0 0 0 3px rgba(38,110,151,0.12)}
 .form-input.error{border-color:var(--c3);box-shadow:0 0 0 3px rgba(238,99,69,0.1)}
+textarea.form-input,.feedback-input{min-height:100px;resize:vertical;width:100%;padding:12px 14px;border:1.5px solid var(--gray-200);border-radius:10px;font-size:16px;font-family:inherit;background:#fff;outline:none}
+textarea.feedback-input:focus{border-color:var(--c1);box-shadow:0 0 0 3px rgba(38,110,151,0.12)}
+.feedback-input.error{border-color:var(--c3);box-shadow:0 0 0 3px rgba(238,99,69,0.1)}
 .error-msg{font-size:13px;color:var(--c3);margin-top:4px;display:none}
 .error-msg.show{display:block}
 .radio-group{display:flex;flex-direction:column;gap:8px}
@@ -69,6 +72,7 @@ body{font-family:'Noto Sans TC','Outfit',sans-serif;background:var(--bg);min-hei
 .stage-badge{font-size:12px;padding:4px 12px;border-radius:20px;font-weight:700}
 .badge-done{background:var(--c5-light);color:var(--c1)}
 .badge-pending{background:var(--c3-light);color:var(--c3)}
+.badge-draft{background:#FFF4E0;color:#D97706;border:1px solid #F5C572}
 .badge-locked{background:var(--gray-200);color:var(--gray-500)}
 .q-item{padding:16px 0;border-bottom:1px solid var(--gray-100)}
 .q-item:last-child{border-bottom:none}
@@ -119,6 +123,19 @@ body{font-family:'Noto Sans TC','Outfit',sans-serif;background:var(--bg);min-hei
 .conclusion-preview{background:var(--c4-light);border-radius:10px;padding:14px;margin-top:12px;font-size:15px;color:var(--gray-800);display:none}
 .conclusion-locked{opacity:0.6;pointer-events:none}
 
+/* ===== 草稿恢復提示 ===== */
+.draft-banner{background:#FFF4E0;border:2px solid #F5C572;border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;font-size:15px;color:#92400E}
+.draft-banner .draft-icon{font-size:20px;flex-shrink:0}
+.draft-banner strong{color:#B45309}
+
+/* ===== AI 錯誤提示框 ===== */
+.ai-error-box{background:var(--c3-pale);border:2px solid var(--c3);border-radius:12px;padding:18px 20px;margin:16px 0;text-align:center}
+.ai-error-box .err-icon{font-size:32px;margin-bottom:8px}
+.ai-error-box .err-title{font-size:16px;font-weight:700;color:var(--c3);margin-bottom:8px}
+.ai-error-box .err-text{font-size:14px;color:var(--gray-700);margin-bottom:14px;line-height:1.6}
+.ai-error-box .btn-retry{background:var(--c3);color:#fff;padding:10px 24px;font-size:15px;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-family:inherit}
+.ai-error-box .btn-retry:hover{background:#D4553D}
+
 /* ===== LINE 風格聊天室 ===== */
 .chat-container{margin:20px 0;border-radius:14px;overflow:hidden;border:2px solid var(--c2);background:var(--c2-light)}
 .chat-header{background:var(--c1);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px}
@@ -131,11 +148,6 @@ body{font-family:'Noto Sans TC','Outfit',sans-serif;background:var(--bg);min-hei
 .chat-bubble{max-width:75%;padding:10px 14px;border-radius:14px 14px 14px 4px;font-size:14px;line-height:1.6;position:relative}
 .chat-name{font-size:11px;font-weight:700;margin-bottom:2px}
 .chat-text{color:var(--gray-800)}
-.chat-typing{display:flex;gap:4px;padding:8px 14px}
-.chat-typing span{width:6px;height:6px;border-radius:50%;background:var(--gray-400);animation:typing 1.2s infinite}
-.chat-typing span:nth-child(2){animation-delay:0.2s}
-.chat-typing span:nth-child(3){animation-delay:0.4s}
-@keyframes typing{0%,100%{opacity:0.3;transform:scale(0.8)}50%{opacity:1;transform:scale(1.2)}}
 
 /* ===== 成員介紹 ===== */
 .chat-members{padding:12px;background:rgba(255,255,255,0.6);border-bottom:1px solid rgba(38,110,151,0.1)}
@@ -171,6 +183,9 @@ body{font-family:'Noto Sans TC','Outfit',sans-serif;background:var(--bg);min-hei
 .sync-status{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:10px;font-size:13px;font-weight:500;z-index:9999;transition:opacity .3s;pointer-events:none}
 .sync-ok{background:var(--c1);color:#fff;box-shadow:0 4px 12px rgba(38,110,151,0.3)}
 .sync-fail{background:var(--c3);color:#fff;box-shadow:0 4px 12px rgba(238,99,69,0.3)}
+
+/* ===== 版本號（左下角小字） ===== */
+.version-tag{position:fixed;bottom:8px;left:8px;font-size:10px;color:var(--gray-300);opacity:0.5;pointer-events:none;z-index:1}
 
 @media(max-width:480px){.app{padding:12px 10px 40px}.card{padding:20px 16px}.likert-btn{font-size:13px;padding:8px 1px}.likert-labels{font-size:12px}.flow-chart{gap:0;padding:14px 6px}.flow-icon{width:32px;height:32px;font-size:12px}.flow-label{font-size:10px;max-width:48px}.flow-arrow{font-size:12px}.chat-body{max-height:400px}.chat-bubble{max-width:85%}}
 </style>
@@ -309,6 +324,16 @@ body{font-family:'Noto Sans TC','Outfit',sans-serif;background:var(--bg);min-hei
   <div class="topbar"><button class="btn-outline" onclick="leaveFeedback()">← 返回總覽</button><button class="btn-logout" onclick="handleLogout()">⏻ 登出</button></div>
   <div class="card">
     <div class="card-title" id="fb-title"></div>
+
+    <!-- 草稿恢復提示 -->
+    <div class="draft-banner" id="draft-banner" style="display:none">
+      <span class="draft-icon">📝</span>
+      <div>
+        <strong>已自動儲存你上次的進度</strong><br>
+        <span style="font-size:13px">你之前填寫的結論、AI 回覆和已選的項目都幫你保留了，<strong>繼續完成 3+3 選擇即可送出</strong>，不需要重新請 AI。</span>
+      </div>
+    </div>
+
     <div class="video-section" id="fb-video-section">
       <div class="video-title">🎬 課程影片</div>
       <div class="video-wrap"><iframe id="fb-video" src="" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div>
@@ -329,6 +354,14 @@ body{font-family:'Noto Sans TC','Outfit',sans-serif;background:var(--bg);min-hei
           <button class="btn btn-send-ai" style="flex:1" id="btn-send-ai" onclick="sendToAI()">送出至購物智囊團</button>
         </div>
       </div>
+    </div>
+
+    <!-- AI 錯誤提示框 -->
+    <div class="ai-error-box" id="ai-error-box" style="display:none">
+      <div class="err-icon">⚠️</div>
+      <div class="err-title">購物智囊團暫時沒有回應</div>
+      <div class="err-text" id="ai-err-detail">請檢查網路連線後再試一次。如果一直無法成功，請通知老師。</div>
+      <button class="btn-retry" onclick="retryAI()">重新請購物智囊團回饋</button>
     </div>
 
     <!-- Chat UI (hidden until AI responds) -->
@@ -402,11 +435,18 @@ body{font-family:'Noto Sans TC','Outfit',sans-serif;background:var(--bg);min-hei
 
 </div>
 <div class="sync-status" id="sync-status" style="opacity:0"></div>
+<div class="version-tag">v2.1-20260421</div>
 
 <script>
-// ===== PLACEHOLDER: 版面預覽用，無實際後端功能 =====
+// ===== 版 B 實驗組 - v2.1（2026-04-21）=====
+// 本次修復：
+//   1. 修復 AI 罐頭話 bug（原 mockResponses 邏輯已移除，失敗時顯示重試按鈕）
+//   2. 修復雙重付費問題（原本每次 call 兩次 API，現在只 call 一次）
+//   3. 加入 draft 自動儲存（結論 / 16 則 AI / 已選 3+3 都會暫存）
+// Code.gs 不動、Sheet 結構不動、資料送出格式不動
+// =====================================================
+
 const LIKERT_N=7;
-const API_KEY=''; // 不需要，透過 Apps Script 呼叫
 const SHEET_URL='https://script.google.com/macros/s/AKfycbwfdUbdOzph6jk9avhWVnzUus_Lf16kcCdmGQkzNGZYnIOO4_iQ2zcxWI-_xbd9TS2Klg/exec';
 
 // 8 personas
@@ -526,6 +566,13 @@ let state={},currentStage=null,currentAIResponses=[];
 function loadState(){const s=localStorage.getItem('socialai_exp_v1');if(s)state=JSON.parse(s)}
 function saveState(){localStorage.setItem('socialai_exp_v1',JSON.stringify(state))}
 
+// ===== Draft 功能 =====
+function draftKey(stageId){return 'socialai_draft_s'+stageId}
+function saveDraft(stageId,draft){try{localStorage.setItem(draftKey(stageId),JSON.stringify(draft))}catch(e){}}
+function loadDraft(stageId){try{const s=localStorage.getItem(draftKey(stageId));return s?JSON.parse(s):null}catch(e){return null}}
+function clearDraft(stageId){try{localStorage.removeItem(draftKey(stageId))}catch(e){}}
+function hasDraft(stageId){const d=loadDraft(stageId);return !!(d&&(d.conclusion||(d.aiResponses&&d.aiResponses.length)))}
+
 // ===== UI HELPERS =====
 function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0)}
 function selR(el,gid){document.querySelectorAll('#'+gid+' .radio-option').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');el.querySelector('input').checked=true}
@@ -546,7 +593,13 @@ function sendToSheet(d){
     setTimeout(()=>{form.remove();iframe.remove()},5000);
   }catch(err){showSyncStatus('✗ 傳送失敗','fail')}
 }
-function leaveFeedback(){document.getElementById('fb-video').src='';showPage('page-dashboard')}
+function leaveFeedback(){
+  // 離開前若正在選 3+3 且尚未送出，存 draft
+  if(currentStage&&!state.stages[currentStage.id]&&currentAIResponses.length){
+    saveCurrentDraft();
+  }
+  document.getElementById('fb-video').src='';showPage('page-dashboard');
+}
 
 // ===== LOGIN =====
 let loginStep=1;
@@ -667,13 +720,20 @@ function renderDashboard(){
     if(s.isCourse)locked=false;
     else if(s.isFinal)locked=!taskStages.every(ts=>state.stages[ts.id]);
     else{const idx=taskStages.indexOf(s);locked=idx>firstIncomplete||!state.stages[0]}
+    const hasDraftForStage=!done&&!locked&&!s.isCourse&&!s.isFinal&&hasDraft(s.id);
     const div=document.createElement('div');
     div.className=`stage-item ${done?'completed':locked?'locked':''}`;
+    let badge;
+    if(done)badge='<span class="stage-badge badge-done">已完成</span>';
+    else if(locked)badge='<span class="stage-badge badge-locked">未開放</span>';
+    else if(hasDraftForStage)badge='<span class="stage-badge badge-draft">繼續填寫</span>';
+    else if(s.isCourse||s.isFinal)badge='<span class="stage-badge badge-pending">待觀看</span>';
+    else badge='<span class="stage-badge badge-pending">待填寫</span>';
     div.innerHTML=`
       <div class="stage-num">${done?'✓':s.isCourse?'📖':s.isFinal?'📝':s.id}</div>
       <div class="stage-info"><div class="stage-title">${s.title}</div><div class="stage-sub">${s.sub}</div></div>
       ${done&&!s.isCourse&&!s.isFinal?'<button class="history-btn" onclick="event.stopPropagation();openHistory('+s.id+')">查看回饋</button>':''}
-      <span class="stage-badge ${done?'badge-done':locked?'badge-locked':'badge-pending'}">${done?'已完成':locked?'未開放':(s.isCourse||s.isFinal)?'待觀看':'待填寫'}</span>`;
+      ${badge}`;
     if(!done&&!locked){
       if(s.isCourse)div.onclick=()=>openCourseIntro();
       else if(s.isFinal)div.onclick=()=>openFinalReport();
@@ -699,6 +759,8 @@ function openCourseIntro(){
   document.getElementById('fb-prompt').innerHTML='<strong>觀看完課程說明影片後，請點擊下方按鈕確認。</strong>';
   document.getElementById('conclusion-section').style.display='none';
   document.getElementById('chat-section').style.display='none';
+  document.getElementById('ai-error-box').style.display='none';
+  document.getElementById('draft-banner').style.display='none';
   // Add confirm button
   let btn=document.getElementById('btn-course-confirm');
   if(!btn){btn=document.createElement('button');btn.id='btn-course-confirm';btn.className='btn btn-primary btn-block';btn.style.marginTop='16px';document.querySelector('#page-feedback .card').appendChild(btn)}
@@ -714,6 +776,8 @@ function openFinalReport(){
   document.getElementById('fb-prompt').innerHTML='<strong>觀看完影片後，請點擊下方按鈕確認。</strong>';
   document.getElementById('conclusion-section').style.display='none';
   document.getElementById('chat-section').style.display='none';
+  document.getElementById('ai-error-box').style.display='none';
+  document.getElementById('draft-banner').style.display='none';
   let btn=document.getElementById('btn-course-confirm');
   if(!btn){btn=document.createElement('button');btn.id='btn-course-confirm';btn.className='btn btn-primary btn-block';btn.style.marginTop='16px';document.querySelector('#page-feedback .card').appendChild(btn)}
   btn.textContent='我已觀看期末報告說明';btn.style.display='block';
@@ -729,17 +793,62 @@ function openFeedback(stageId){
   document.getElementById('fb-video').src=`https://www.youtube.com/embed/${currentStage.video}?rel=0`;
   document.getElementById('fb-video-section').style.display='block';
   document.getElementById('fb-prompt').innerHTML=`<strong>統一提問指令：</strong><br>「${currentStage.prompt}」`;
-  // Show conclusion, hide chat
-  document.getElementById('conclusion-section').style.display='block';
-  document.getElementById('chat-section').style.display='none';
-  document.getElementById('fb-conclusion').value='';
-  document.getElementById('fb-conclusion').classList.remove('error','conclusion-locked');
-  document.getElementById('fb-conclusion').disabled=false;
-  document.getElementById('btn-preview').style.display='block';
-  document.getElementById('conclusion-preview').style.display='none';
   // Hide course confirm btn
   const ccBtn=document.getElementById('btn-course-confirm');if(ccBtn)ccBtn.style.display='none';
-  currentAIResponses=[];
+
+  // 嘗試載入 draft
+  const draft=loadDraft(stageId);
+  if(draft&&draft.aiResponses&&draft.aiResponses.length){
+    // ✨ 有 draft 且已經 call 過 AI → 直接恢復聊天畫面
+    document.getElementById('draft-banner').style.display='flex';
+    document.getElementById('conclusion-section').style.display='block';
+    document.getElementById('fb-conclusion').value=draft.conclusion||'';
+    document.getElementById('fb-conclusion').disabled=true;
+    document.getElementById('fb-conclusion').classList.add('conclusion-locked');
+    document.getElementById('btn-preview').style.display='none';
+    document.getElementById('conclusion-preview').style.display='none';
+    document.getElementById('ai-error-box').style.display='none';
+    currentAIResponses=draft.aiResponses.map(r=>({persona:PERSONAS.find(p=>p.name===r.persona_name)||PERSONAS[0],text:r.text}));
+    document.getElementById('chat-section').style.display='block';
+    renderChatMembers();
+    renderChatFromDraft(draft);
+  }else if(draft&&draft.conclusion){
+    // 有填結論但還沒 call AI → 恢復結論框
+    document.getElementById('draft-banner').style.display='flex';
+    document.getElementById('conclusion-section').style.display='block';
+    document.getElementById('chat-section').style.display='none';
+    document.getElementById('ai-error-box').style.display='none';
+    document.getElementById('fb-conclusion').value=draft.conclusion;
+    document.getElementById('fb-conclusion').classList.remove('error','conclusion-locked');
+    document.getElementById('fb-conclusion').disabled=false;
+    document.getElementById('btn-preview').style.display='block';
+    document.getElementById('conclusion-preview').style.display='none';
+    currentAIResponses=[];
+  }else{
+    // 全新開始
+    document.getElementById('draft-banner').style.display='none';
+    document.getElementById('conclusion-section').style.display='block';
+    document.getElementById('chat-section').style.display='none';
+    document.getElementById('ai-error-box').style.display='none';
+    document.getElementById('fb-conclusion').value='';
+    document.getElementById('fb-conclusion').classList.remove('error','conclusion-locked');
+    document.getElementById('fb-conclusion').disabled=false;
+    document.getElementById('btn-preview').style.display='block';
+    document.getElementById('conclusion-preview').style.display='none';
+    currentAIResponses=[];
+  }
+
+  // 結論輸入時即時存 draft
+  document.getElementById('fb-conclusion').oninput=function(){
+    if(this.disabled)return;
+    const txt=this.value.trim();
+    if(txt){
+      const d=loadDraft(stageId)||{};
+      d.conclusion=txt;
+      saveDraft(stageId,d);
+    }
+  };
+
   showPage('page-feedback');
 }
 
@@ -755,23 +864,20 @@ function editConclusion(){
   document.getElementById('btn-preview').style.display='block';
 }
 
+// ===== 呼叫 AI（只 call 一次，失敗不用罐頭話）=====
 function sendToAI(){
   const conclusion=document.getElementById('fb-conclusion').value.trim();
   document.getElementById('fb-conclusion').disabled=true;
   document.getElementById('fb-conclusion').classList.add('conclusion-locked');
   document.getElementById('conclusion-preview').style.display='none';
   document.getElementById('btn-preview').style.display='none';
+  document.getElementById('ai-error-box').style.display='none';
   document.getElementById('chat-section').style.display='block';
   document.getElementById('feedback-bar').style.display='none';
-  const chatBody=document.getElementById('chat-body');
-  chatBody.innerHTML='<div style="text-align:center;padding:20px;color:var(--gray-500)">購物智囊團正在討論你的結論，請稍候...</div>';
 
-  // Render member intro grid
-  const grid=document.getElementById('chat-members-grid');
-  grid.innerHTML='';
-  PERSONAS.forEach(p=>{
-    grid.innerHTML+=`<div class="chat-member"><div class="chat-member-avatar" style="background:${p.color}">${p.emoji}</div><div class="chat-member-name">${p.name}</div><div class="chat-member-style">${p.style}</div></div>`;
-  });
+  renderChatMembers();
+  const chatBody=document.getElementById('chat-body');
+  chatBody.innerHTML='<div style="text-align:center;padding:30px 20px;color:var(--gray-500)"><div style="font-size:28px;margin-bottom:8px">🛒</div>購物智囊團正在討論你的結論，請稍候約 20 秒...</div>';
 
   const stageInfo=currentStage;
   const personaDesc=PERSONAS.map(p=>`${p.name}（${p.style}）：${p.desc}`).join('\n');
@@ -799,75 +905,73 @@ ${personaDesc}
 
   const userMsg=`我們小組的結論是：「${conclusion}」\n\n這是「${stageInfo.title}」階段的任務。請 8 位成員各給出 2 則回饋。`;
 
-  // Call Claude API via Apps Script proxy
+  // 🔧 修復：只 call 一次 API（用 URLSearchParams），不再故意拋錯做第二次
   fetch(SHEET_URL,{
     method:'POST',
-    mode:'no-cors',
-    headers:{'Content-Type':'text/plain'},
-    body:JSON.stringify({
+    body:new URLSearchParams({data:JSON.stringify({
       type:'ai_request',
       systemPrompt:systemPrompt,
       userMessage:userMsg
-    })
+    })})
   })
   .then(r=>r.text())
   .then(raw=>{
-    // no-cors returns opaque, try form-based approach instead
-    throw new Error('use_form');
+    var data;
+    try{data=JSON.parse(raw)}
+    catch(e){throw new Error('伺服器回應格式錯誤')}
+
+    if(data.status==='ok'&&data.ai_response){
+      var jsonMatch=data.ai_response.match(/\[[\s\S]*\]/);
+      if(!jsonMatch)throw new Error('AI 回覆格式無法解析');
+      var responses;
+      try{responses=JSON.parse(jsonMatch[0])}
+      catch(e){throw new Error('AI 回覆 JSON 解析失敗')}
+      if(!responses||!responses.length)throw new Error('AI 回覆內容為空');
+
+      var mapped=responses.map(function(r){
+        var persona=PERSONAS.find(function(p){return p.name===r.persona})||PERSONAS[0];
+        return {persona:persona,text:r.text};
+      });
+
+      // 成功 → 存 draft（結論 + AI 回覆，但不存選擇，因為還沒選）
+      saveDraft(currentStage.id,{
+        conclusion:conclusion,
+        aiResponses:mapped.map(r=>({persona_name:r.persona.name,text:r.text})),
+        selections:{}
+      });
+
+      showSyncStatus('✓ AI 回覆成功','ok');
+      displayAIResponses(mapped);
+    }else{
+      throw new Error(data.message||'AI 回覆失敗');
+    }
   })
   .catch(err=>{
-    // Use form + iframe approach for Apps Script
-    var reqId='ai_'+Date.now();
-    var iframe=document.createElement('iframe');
-    iframe.name=reqId;iframe.style.display='none';
-    document.body.appendChild(iframe);
+    console.error('AI error:',err);
+    // ❌ 絕對不再用罐頭話！顯示錯誤 + 重試按鈕
+    document.getElementById('chat-section').style.display='none';
+    document.getElementById('ai-error-box').style.display='block';
+    document.getElementById('ai-err-detail').textContent='錯誤：'+err.message+'。請檢查網路連線後按下方按鈕重試。';
+    showSyncStatus('⚠ AI 連線失敗，請重試','fail');
+  });
+}
 
-    // For AI request, we need the response, so use a different approach
-    // Post via fetch with redirect
-    var formData=new FormData();
-    formData.append('data',JSON.stringify({
-      type:'ai_request',
-      systemPrompt:systemPrompt,
-      userMessage:userMsg
-    }));
+function retryAI(){
+  // 解鎖結論框，讓學生可以按「送出至購物智囊團」再試
+  document.getElementById('ai-error-box').style.display='none';
+  document.getElementById('fb-conclusion').disabled=false;
+  document.getElementById('fb-conclusion').classList.remove('conclusion-locked');
+  document.getElementById('conclusion-preview').style.display='block';
+  document.getElementById('btn-preview').style.display='none';
+  const text=document.getElementById('fb-conclusion').value.trim();
+  document.getElementById('preview-text').textContent=text;
+}
 
-    fetch(SHEET_URL,{
-      method:'POST',
-      body:new URLSearchParams({data:JSON.stringify({
-        type:'ai_request',
-        systemPrompt:systemPrompt,
-        userMessage:userMsg
-      })})
-    })
-    .then(r=>r.text())
-    .then(raw=>{
-      try{
-        var data=JSON.parse(raw);
-        if(data.status==='ok'&&data.ai_response){
-          var jsonMatch=data.ai_response.match(/\[[\s\S]*\]/);
-          if(!jsonMatch)throw new Error('無法解析 AI 回覆');
-          var responses=JSON.parse(jsonMatch[0]);
-          var mapped=responses.map(function(r){
-            var persona=PERSONAS.find(function(p){return p.name===r.persona})||PERSONAS[0];
-            return {persona:persona,text:r.text};
-          });
-          showSyncStatus('✓ AI 回覆成功','ok');
-          displayAIResponses(mapped);
-        }else{
-          throw new Error(data.message||'AI 回覆失敗');
-        }
-      }catch(e){throw e}
-    })
-    .catch(err2=>{
-      console.error('AI error:',err2);
-      var mockResponses=PERSONAS.flatMap(p=>[
-        {persona:p,text:`從${p.style}的角度來看，你們的結論「${conclusion.substring(0,20)}...」有它的道理。我覺得判斷方向是對的，值得繼續深入探索。`},
-        {persona:p,text:`不過身為${p.style}，我會比較擔心這個選擇可能忽略了一些重要的面向，建議你們再從其他角度想想看。`},
-      ]);
-      displayAIResponses(mockResponses);
-      showSyncStatus('⚠ AI：'+err2.message,'fail');
-    });
-    iframe.remove();
+function renderChatMembers(){
+  const grid=document.getElementById('chat-members-grid');
+  grid.innerHTML='';
+  PERSONAS.forEach(p=>{
+    grid.innerHTML+=`<div class="chat-member"><div class="chat-member-avatar" style="background:${p.color}">${p.emoji}</div><div class="chat-member-name">${p.name}</div><div class="chat-member-style">${p.style}</div></div>`;
   });
 }
 
@@ -886,7 +990,7 @@ function displayAIResponses(responses){
         <div style="flex:1">
           <div class="chat-name" style="color:${resp.persona.color}">${resp.persona.name}</div>
           <div class="chat-bubble" style="background:#fff;border:1.5px solid ${resp.persona.color}30" data-idx="${i}">
-            <div class="chat-text">${resp.text}</div>
+            <div class="chat-text">${escapeHtml(resp.text)}</div>
             <div class="bubble-mark" id="bm-${i}">
               <button class="bubble-mark-btn bm-pos" onclick="markBubble(${i},'pos')">👍 正面</button>
               <button class="bubble-mark-btn bm-neg" onclick="markBubble(${i},'neg')">👎 反面</button>
@@ -907,6 +1011,39 @@ function displayAIResponses(responses){
     },delay);
   });
 }
+
+// 從 draft 恢復聊天畫面（立即顯示，不用打字動畫）
+function renderChatFromDraft(draft){
+  const chatBody=document.getElementById('chat-body');
+  chatBody.innerHTML='';
+  const responses=currentAIResponses;
+  const sels=draft.selections||{};
+
+  responses.forEach((resp,i)=>{
+    const sel=sels[i]||'';
+    const msg=document.createElement('div');msg.className='chat-msg';msg.dataset.idx=i;msg.dataset.sel=sel;
+    msg.innerHTML=`
+      <div class="chat-avatar" style="background:${resp.persona.color}">${resp.persona.emoji}</div>
+      <div style="flex:1">
+        <div class="chat-name" style="color:${resp.persona.color}">${resp.persona.name}</div>
+        <div class="chat-bubble ${sel==='pos'?'marked-pos':sel==='neg'?'marked-neg':''}" style="background:#fff;border:1.5px solid ${resp.persona.color}30" data-idx="${i}">
+          <div class="chat-text">${escapeHtml(resp.text)}</div>
+          <div class="bubble-mark" id="bm-${i}" style="display:block">
+            <button class="bubble-mark-btn bm-pos ${sel==='pos'?'active':''}" onclick="markBubble(${i},'pos')">👍 正面</button>
+            <button class="bubble-mark-btn bm-neg ${sel==='neg'?'active':''}" onclick="markBubble(${i},'neg')">👎 反面</button>
+            <button class="bubble-mark-btn bm-clear" onclick="markBubble(${i},'clear')" style="${sel?'display:inline-block':'display:none'}">✕ 取消</button>
+          </div>
+        </div>
+      </div>`;
+    chatBody.appendChild(msg);
+  });
+
+  document.getElementById('chat-instruction').style.display='block';
+  document.getElementById('feedback-bar').style.display='block';
+  updateFeedbackCounter();
+}
+
+function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 
 function markBubble(idx,type){
   const msg=document.querySelector(`.chat-msg[data-idx="${idx}"]`);
@@ -940,6 +1077,19 @@ function markBubble(idx,type){
     msg.querySelector('.bm-clear').style.display='inline-block';
   }
   updateFeedbackCounter();
+  saveCurrentDraft();  // 每次點選都存 draft
+}
+
+function saveCurrentDraft(){
+  if(!currentStage||!currentAIResponses.length)return;
+  const conclusion=document.getElementById('fb-conclusion').value.trim();
+  const sels={};
+  document.querySelectorAll('.chat-msg').forEach(m=>{if(m.dataset.sel)sels[m.dataset.idx]=m.dataset.sel});
+  saveDraft(currentStage.id,{
+    conclusion:conclusion,
+    aiResponses:currentAIResponses.map(r=>({persona_name:r.persona.name,text:r.text})),
+    selections:sels
+  });
 }
 
 function updateFeedbackCounter(){
@@ -964,7 +1114,10 @@ function handleFeedback(){
     ai_responses:currentAIResponses.map(r=>({persona:r.persona.name,style:r.persona.style,text:r.text})),
     time:new Date().toISOString()
   };
-  saveState();sendToSheet({type:'feedback',studentId:state.studentId,stage:currentStage.id,data:state.stages[currentStage.id]});
+  saveState();
+  sendToSheet({type:'feedback',studentId:state.studentId,stage:currentStage.id,data:state.stages[currentStage.id]});
+  // 送出成功 → 清 draft
+  clearDraft(currentStage.id);
   document.getElementById('fb-video').src='';
   renderDashboard();showPage('page-dashboard');
 }
@@ -974,21 +1127,41 @@ function openHistory(stageId){
   const s=STAGES.find(st=>st.id===stageId);
   const data=state.stages[stageId];if(!data)return;
   document.getElementById('hist-title').textContent=s.title+'：回饋紀錄';
-  document.getElementById('hist-conclusion').innerHTML=`<div style="font-weight:700;color:var(--c1);margin-bottom:6px">📌 小組結論</div><div>${data.conclusion||''}</div>`;
-  // Show AI responses
-  const chatHtml=(data.ai_responses||[]).map(r=>`<div style="display:flex;gap:8px;margin-bottom:8px"><div style="width:28px;height:28px;border-radius:50%;background:var(--c4);display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;flex-shrink:0">💬</div><div><div style="font-size:11px;font-weight:700;color:var(--gray-500)">${r.persona}（${r.style}）</div><div style="font-size:14px">${r.text}</div></div></div>`).join('');
+  document.getElementById('hist-conclusion').innerHTML=`<div style="font-weight:700;color:var(--c1);margin-bottom:6px">📌 小組結論</div><div>${escapeHtml(data.conclusion||'')}</div>`;
+  const chatHtml=(data.ai_responses||[]).map(r=>`<div style="display:flex;gap:8px;margin-bottom:8px"><div style="width:28px;height:28px;border-radius:50%;background:var(--c4);display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;flex-shrink:0">💬</div><div><div style="font-size:11px;font-weight:700;color:var(--gray-500)">${escapeHtml(r.persona)}（${escapeHtml(r.style)}）</div><div style="font-size:14px">${escapeHtml(r.text)}</div></div></div>`).join('');
   document.getElementById('hist-chat').innerHTML=chatHtml?`<div style="font-weight:700;color:var(--c1);margin-bottom:8px">🛒 購物智囊團回覆</div>${chatHtml}`:'';
-  // Show selected
-  const selHtml=`<div style="font-weight:700;color:var(--c1);margin-bottom:8px">你的選擇</div><div style="margin-bottom:8px"><strong>👍 正面：</strong>${(data.positive||[]).map((t,i)=>`<div style="padding:4px 0;font-size:14px">${i+1}. ${t}</div>`).join('')}</div><div><strong>👎 反面：</strong>${(data.negative||[]).map((t,i)=>`<div style="padding:4px 0;font-size:14px">${i+1}. ${t}</div>`).join('')}</div>`;
+  const selHtml=`<div style="font-weight:700;color:var(--c1);margin-bottom:8px">你的選擇</div><div style="margin-bottom:8px"><strong>👍 正面：</strong>${(data.positive||[]).map((t,i)=>`<div style="padding:4px 0;font-size:14px">${i+1}. ${escapeHtml(t)}</div>`).join('')}</div><div><strong>👎 反面：</strong>${(data.negative||[]).map((t,i)=>`<div style="padding:4px 0;font-size:14px">${i+1}. ${escapeHtml(t)}</div>`).join('')}</div>`;
   document.getElementById('hist-selected').innerHTML=selHtml;
   showPage('page-history');
 }
 
 // ===== INIT =====
 let _tapCount=0,_tapTimer=null;
-function secretReset(){_tapCount++;if(_tapTimer)clearTimeout(_tapTimer);_tapTimer=setTimeout(()=>{_tapCount=0},2000);if(_tapCount>=5){if(confirm("確定要清除所有測試資料嗎？")){localStorage.removeItem("socialai_exp_v1");_tapCount=0;alert("資料已清除");location.reload()}}}
+function secretReset(){
+  _tapCount++;
+  if(_tapTimer)clearTimeout(_tapTimer);
+  _tapTimer=setTimeout(()=>{_tapCount=0},2000);
+  if(_tapCount>=5){
+    if(confirm("確定要清除所有測試資料嗎？這會清除這支裝置上所有進度（包括 draft）。")){
+      localStorage.removeItem("socialai_exp_v1");
+      // 同步清所有 draft
+      for(let i=1;i<=5;i++)localStorage.removeItem('socialai_draft_s'+i);
+      _tapCount=0;
+      alert("資料已清除");
+      location.reload();
+    }
+  }
+}
 loadState();
-function handleLogout(){document.getElementById('fb-video').src='';showPage('page-login');document.getElementById('login-id1').value='';document.getElementById('login-id2').value='';document.getElementById('login-id2-group').style.display='none';document.getElementById('login-error').classList.remove('show');loginStep=1}
+function handleLogout(){
+  document.getElementById('fb-video').src='';
+  showPage('page-login');
+  document.getElementById('login-id1').value='';
+  document.getElementById('login-id2').value='';
+  document.getElementById('login-id2-group').style.display='none';
+  document.getElementById('login-error').classList.remove('show');
+  loginStep=1;
+}
 </script>
 </body>
 </html>

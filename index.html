@@ -128,6 +128,12 @@ textarea.feedback-input:focus{border-color:var(--c1);box-shadow:0 0 0 3px rgba(3
 .draft-banner .draft-icon{font-size:20px;flex-shrink:0}
 .draft-banner strong{color:#B45309}
 
+/* ===== Dashboard 未完成橫條（v2.2 新增）===== */
+.dash-incomplete-banner{background:#FFF4E0;border:2px solid #F5C572;border-radius:12px;padding:14px 16px;margin-bottom:18px;display:flex;align-items:center;gap:10px;font-size:15px;color:#92400E;font-weight:600;animation:bannerPulse 2.5s ease-in-out infinite}
+.dash-incomplete-banner .banner-icon{font-size:22px;flex-shrink:0}
+.dash-incomplete-banner strong{color:#B45309}
+@keyframes bannerPulse{0%,100%{border-color:#F5C572;box-shadow:0 0 0 0 rgba(245,197,114,0.4)}50%{border-color:#E89D2E;box-shadow:0 0 0 6px rgba(245,197,114,0.15)}}
+
 /* ===== AI 錯誤提示框 ===== */
 .ai-error-box{background:var(--c3-pale);border:2px solid var(--c3);border-radius:12px;padding:18px 20px;margin:16px 0;text-align:center}
 .ai-error-box .err-icon{font-size:32px;margin-bottom:8px}
@@ -313,6 +319,11 @@ textarea.feedback-input:focus{border-color:var(--c1);box-shadow:0 0 0 3px rgba(3
   <div class="topbar"><div class="topbar-user">您好，<strong id="dash-name"></strong></div><button class="btn-logout" onclick="handleLogout()">⏻ 登出</button></div>
   <div class="card">
     <div class="card-title"><div class="icon icon-purple">📊</div>課程總覽</div>
+    <!-- v2.2 新增：未完成提醒橫條（僅在有 draft 但未送出時顯示） -->
+    <div class="dash-incomplete-banner" id="dash-incomplete-banner" style="display:none">
+      <span class="banner-icon">⚠️</span>
+      <div>您有未完成的階段，請點橘色「<strong>繼續填寫</strong>」按鈕完成</div>
+    </div>
     <div class="flow-chart" id="flow-chart"></div>
     <p style="font-size:14px;color:var(--gray-500);margin-bottom:16px">請依序完成各階段。觀看影片後，向「購物智囊團」提交結論並收集回饋。</p>
     <div class="stage-list" id="stage-list"></div>
@@ -435,15 +446,18 @@ textarea.feedback-input:focus{border-color:var(--c1);box-shadow:0 0 0 3px rgba(3
 
 </div>
 <div class="sync-status" id="sync-status" style="opacity:0"></div>
-<div class="version-tag">v2.1-20260421</div>
+<div class="version-tag">v2.2-20260427</div>
 
 <script>
-// ===== 版 B 實驗組 - v2.1（2026-04-21）=====
-// 本次修復：
-//   1. 修復 AI 罐頭話 bug（原 mockResponses 邏輯已移除，失敗時顯示重試按鈕）
-//   2. 修復雙重付費問題（原本每次 call 兩次 API，現在只 call 一次）
-//   3. 加入 draft 自動儲存（結論 / 16 則 AI / 已選 3+3 都會暫存）
-// Code.gs 不動、Sheet 結構不動、資料送出格式不動
+// ===== 版 B 實驗組 - v2.2（2026-04-27）=====
+// 本次修復（v2.2）：
+//   1. Dashboard 加未完成提醒橫條（橘色，閃爍動畫，僅在「有 draft 但未送出」時顯示）
+// 保留 v2.1 的修復：
+//   - AI 罐頭話 bug 已移除
+//   - 雙重付費已修復
+//   - draft 自動儲存（結論 / 16 則 AI / 已選 3+3）
+// 本次修復（v2.2）只動 HTML/CSS/JS 視覺，不影響資料邏輯
+// Code.gs 不動、Sheet 結構不動、資料送出格式不動、現有 30 筆資料不影響
 // =====================================================
 
 const LIKERT_N=7;
@@ -594,11 +608,12 @@ function sendToSheet(d){
   }catch(err){showSyncStatus('✗ 傳送失敗','fail')}
 }
 function leaveFeedback(){
-  // 離開前若正在選 3+3 且尚未送出，存 draft
   if(currentStage&&!state.stages[currentStage.id]&&currentAIResponses.length){
     saveCurrentDraft();
   }
   document.getElementById('fb-video').src='';showPage('page-dashboard');
+  // 回 Dashboard 後重新渲染（讓橫條和徽章狀態更新）
+  renderDashboard();
 }
 
 // ===== LOGIN =====
@@ -714,6 +729,19 @@ function renderDashboard(){
   let firstIncomplete=taskStages.length;
   for(let i=0;i<taskStages.length;i++){if(!state.stages[taskStages[i].id]){firstIncomplete=i;break}}
 
+  // v2.2 新增：判斷是否要顯示「未完成提醒橫條」
+  // 條件：階段 1-5 任一個有 draft 但未送出（state.stages[i] 不存在）
+  let hasIncompleteWithDraft=false;
+  taskStages.forEach(s=>{
+    if(!state.stages[s.id]&&hasDraft(s.id)){
+      hasIncompleteWithDraft=true;
+    }
+  });
+  const banner=document.getElementById('dash-incomplete-banner');
+  if(banner){
+    banner.style.display=hasIncompleteWithDraft?'flex':'none';
+  }
+
   STAGES.forEach(s=>{
     const done=!!state.stages[s.id];
     let locked=false;
@@ -761,7 +789,6 @@ function openCourseIntro(){
   document.getElementById('chat-section').style.display='none';
   document.getElementById('ai-error-box').style.display='none';
   document.getElementById('draft-banner').style.display='none';
-  // Add confirm button
   let btn=document.getElementById('btn-course-confirm');
   if(!btn){btn=document.createElement('button');btn.id='btn-course-confirm';btn.className='btn btn-primary btn-block';btn.style.marginTop='16px';document.querySelector('#page-feedback .card').appendChild(btn)}
   btn.textContent='我已觀看課程說明';btn.style.display='block';
@@ -793,13 +820,10 @@ function openFeedback(stageId){
   document.getElementById('fb-video').src=`https://www.youtube.com/embed/${currentStage.video}?rel=0`;
   document.getElementById('fb-video-section').style.display='block';
   document.getElementById('fb-prompt').innerHTML=`<strong>統一提問指令：</strong><br>「${currentStage.prompt}」`;
-  // Hide course confirm btn
   const ccBtn=document.getElementById('btn-course-confirm');if(ccBtn)ccBtn.style.display='none';
 
-  // 嘗試載入 draft
   const draft=loadDraft(stageId);
   if(draft&&draft.aiResponses&&draft.aiResponses.length){
-    // ✨ 有 draft 且已經 call 過 AI → 直接恢復聊天畫面
     document.getElementById('draft-banner').style.display='flex';
     document.getElementById('conclusion-section').style.display='block';
     document.getElementById('fb-conclusion').value=draft.conclusion||'';
@@ -813,7 +837,6 @@ function openFeedback(stageId){
     renderChatMembers();
     renderChatFromDraft(draft);
   }else if(draft&&draft.conclusion){
-    // 有填結論但還沒 call AI → 恢復結論框
     document.getElementById('draft-banner').style.display='flex';
     document.getElementById('conclusion-section').style.display='block';
     document.getElementById('chat-section').style.display='none';
@@ -825,7 +848,6 @@ function openFeedback(stageId){
     document.getElementById('conclusion-preview').style.display='none';
     currentAIResponses=[];
   }else{
-    // 全新開始
     document.getElementById('draft-banner').style.display='none';
     document.getElementById('conclusion-section').style.display='block';
     document.getElementById('chat-section').style.display='none';
@@ -838,7 +860,6 @@ function openFeedback(stageId){
     currentAIResponses=[];
   }
 
-  // 結論輸入時即時存 draft
   document.getElementById('fb-conclusion').oninput=function(){
     if(this.disabled)return;
     const txt=this.value.trim();
@@ -905,7 +926,6 @@ ${personaDesc}
 
   const userMsg=`我們小組的結論是：「${conclusion}」\n\n這是「${stageInfo.title}」階段的任務。請 8 位成員各給出 2 則回饋。`;
 
-  // 🔧 修復：只 call 一次 API（用 URLSearchParams），不再故意拋錯做第二次
   fetch(SHEET_URL,{
     method:'POST',
     body:new URLSearchParams({data:JSON.stringify({
@@ -933,7 +953,6 @@ ${personaDesc}
         return {persona:persona,text:r.text};
       });
 
-      // 成功 → 存 draft（結論 + AI 回覆，但不存選擇，因為還沒選）
       saveDraft(currentStage.id,{
         conclusion:conclusion,
         aiResponses:mapped.map(r=>({persona_name:r.persona.name,text:r.text})),
@@ -948,7 +967,6 @@ ${personaDesc}
   })
   .catch(err=>{
     console.error('AI error:',err);
-    // ❌ 絕對不再用罐頭話！顯示錯誤 + 重試按鈕
     document.getElementById('chat-section').style.display='none';
     document.getElementById('ai-error-box').style.display='block';
     document.getElementById('ai-err-detail').textContent='錯誤：'+err.message+'。請檢查網路連線後按下方按鈕重試。';
@@ -957,7 +975,6 @@ ${personaDesc}
 }
 
 function retryAI(){
-  // 解鎖結論框，讓學生可以按「送出至購物智囊團」再試
   document.getElementById('ai-error-box').style.display='none';
   document.getElementById('fb-conclusion').disabled=false;
   document.getElementById('fb-conclusion').classList.remove('conclusion-locked');
@@ -1012,7 +1029,6 @@ function displayAIResponses(responses){
   });
 }
 
-// 從 draft 恢復聊天畫面（立即顯示，不用打字動畫）
 function renderChatFromDraft(draft){
   const chatBody=document.getElementById('chat-body');
   chatBody.innerHTML='';
@@ -1077,7 +1093,7 @@ function markBubble(idx,type){
     msg.querySelector('.bm-clear').style.display='inline-block';
   }
   updateFeedbackCounter();
-  saveCurrentDraft();  // 每次點選都存 draft
+  saveCurrentDraft();
 }
 
 function saveCurrentDraft(){
@@ -1116,7 +1132,6 @@ function handleFeedback(){
   };
   saveState();
   sendToSheet({type:'feedback',studentId:state.studentId,stage:currentStage.id,data:state.stages[currentStage.id]});
-  // 送出成功 → 清 draft
   clearDraft(currentStage.id);
   document.getElementById('fb-video').src='';
   renderDashboard();showPage('page-dashboard');
@@ -1144,7 +1159,6 @@ function secretReset(){
   if(_tapCount>=5){
     if(confirm("確定要清除所有測試資料嗎？這會清除這支裝置上所有進度（包括 draft）。")){
       localStorage.removeItem("socialai_exp_v1");
-      // 同步清所有 draft
       for(let i=1;i<=5;i++)localStorage.removeItem('socialai_draft_s'+i);
       _tapCount=0;
       alert("資料已清除");

@@ -94,7 +94,6 @@ textarea.feedback-input:focus{border-color:var(--c1);box-shadow:0 0 0 3px rgba(3
 .thank-you{text-align:center;padding:40px 0}
 .thank-you h2{font-size:28px;background:linear-gradient(135deg,var(--c1),var(--c5));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:16px}
 
-/* ===== 流程圖 ===== */
 .flow-chart{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0;margin-bottom:20px;padding:18px 10px;background:var(--c2-light);border-radius:14px;border:2px solid var(--c2)}
 .flow-step{display:flex;flex-direction:column;align-items:center;gap:5px;min-width:50px;position:relative}
 .flow-icon{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;border:2.5px solid var(--c1);background:#fff;color:var(--c1);transition:all .3s}
@@ -107,13 +106,11 @@ textarea.feedback-input:focus{border-color:var(--c1);box-shadow:0 0 0 3px rgba(3
 .flow-step.current .flow-label{color:var(--c3)}
 .flow-arrow{font-size:14px;color:var(--c1);margin:0 1px;flex-shrink:0;align-self:center;margin-bottom:20px}
 
-/* ===== 影片區塊 ===== */
 .video-section{margin-bottom:20px}
 .video-section .video-title{font-size:16px;font-weight:700;color:var(--cover);margin-bottom:8px;display:flex;align-items:center;gap:6px}
 .video-wrap{position:relative;padding-bottom:56.25%;height:0;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.1)}
 .video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
 
-/* ===== 結論欄位 ===== */
 .conclusion-section{margin-bottom:20px;padding:16px;background:var(--c5-pale);border-radius:12px;border:2px solid var(--c5)}
 .conclusion-label{font-size:16px;font-weight:700;color:var(--cover);margin-bottom:8px;display:flex;align-items:center;gap:6px}
 .btn-preview{background:var(--c4);color:#fff;margin-top:8px}
@@ -123,18 +120,15 @@ textarea.feedback-input:focus{border-color:var(--c1);box-shadow:0 0 0 3px rgba(3
 .conclusion-preview{background:var(--c4-light);border-radius:10px;padding:14px;margin-top:12px;font-size:15px;color:var(--gray-800);display:none}
 .conclusion-locked{opacity:0.6;pointer-events:none}
 
-/* ===== 草稿恢復提示 ===== */
 .draft-banner{background:#FFF4E0;border:2px solid #F5C572;border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;font-size:15px;color:#92400E}
 .draft-banner .draft-icon{font-size:20px;flex-shrink:0}
 .draft-banner strong{color:#B45309}
 
-/* ===== Dashboard 未完成橫條（v2.2 新增）===== */
 .dash-incomplete-banner{background:#FFF4E0;border:2px solid #F5C572;border-radius:12px;padding:14px 16px;margin-bottom:18px;display:flex;align-items:center;gap:10px;font-size:15px;color:#92400E;font-weight:600;animation:bannerPulse 2.5s ease-in-out infinite}
 .dash-incomplete-banner .banner-icon{font-size:22px;flex-shrink:0}
 .dash-incomplete-banner strong{color:#B45309}
 @keyframes bannerPulse{0%,100%{border-color:#F5C572;box-shadow:0 0 0 0 rgba(245,197,114,0.4)}50%{border-color:#E89D2E;box-shadow:0 0 0 6px rgba(245,197,114,0.15)}}
 
-/* ===== AI 錯誤提示框 ===== */
 .ai-error-box{background:var(--c3-pale);border:2px solid var(--c3);border-radius:12px;padding:18px 20px;margin:16px 0;text-align:center}
 .ai-error-box .err-icon{font-size:32px;margin-bottom:8px}
 .ai-error-box .err-title{font-size:16px;font-weight:700;color:var(--c3);margin-bottom:8px}
@@ -142,7 +136,20 @@ textarea.feedback-input:focus{border-color:var(--c1);box-shadow:0 0 0 3px rgba(3
 .ai-error-box .btn-retry{background:var(--c3);color:#fff;padding:10px 24px;font-size:15px;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-family:inherit}
 .ai-error-box .btn-retry:hover{background:#D4553D}
 
-/* ===== LINE 風格聊天室 ===== */
+/* v2.3 新增：登入時連線提示 */
+.login-loading{text-align:center;padding:30px 20px;color:var(--c1)}
+.login-loading .spinner{display:inline-block;width:32px;height:32px;border:3px solid var(--c1-pale);border-top-color:var(--c1);border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* v2.3 新增：登入失敗 + 重試按鈕 */
+.login-error-box{background:var(--c3-pale);border:2px solid var(--c3);border-radius:12px;padding:18px 20px;margin:16px 0;text-align:center;display:none}
+.login-error-box.show{display:block}
+.login-error-box .err-icon{font-size:32px;margin-bottom:8px}
+.login-error-box .err-title{font-size:16px;font-weight:700;color:var(--c3);margin-bottom:8px}
+.login-error-box .err-text{font-size:14px;color:var(--gray-700);margin-bottom:14px;line-height:1.6}
+.login-error-box .btn-retry-login{background:var(--c3);color:#fff;padding:10px 24px;font-size:15px;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-family:inherit}
+.login-error-box .btn-retry-login:hover{background:#D4553D}
+
 .chat-container{margin:20px 0;border-radius:14px;overflow:hidden;border:2px solid var(--c2);background:var(--c2-light)}
 .chat-header{background:var(--c1);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px}
 .chat-header-icon{width:32px;height:32px;border-radius:50%;background:var(--c5);display:flex;align-items:center;justify-content:center;font-size:16px}
@@ -155,7 +162,6 @@ textarea.feedback-input:focus{border-color:var(--c1);box-shadow:0 0 0 3px rgba(3
 .chat-name{font-size:11px;font-weight:700;margin-bottom:2px}
 .chat-text{color:var(--gray-800)}
 
-/* ===== 成員介紹 ===== */
 .chat-members{padding:12px;background:rgba(255,255,255,0.6);border-bottom:1px solid rgba(38,110,151,0.1)}
 .chat-members-title{font-size:13px;font-weight:700;color:var(--c1);margin-bottom:8px}
 .chat-members-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
@@ -164,7 +170,6 @@ textarea.feedback-input:focus{border-color:var(--c1);box-shadow:0 0 0 3px rgba(3
 .chat-member-name{font-size:10px;font-weight:700;color:var(--gray-700);text-align:center}
 .chat-member-style{font-size:9px;color:var(--gray-500);text-align:center}
 
-/* ===== 泡泡上的標記按鈕 ===== */
 .bubble-mark{display:none;margin-top:6px}
 .bubble-mark-btn{border:none;border-radius:6px;padding:4px 10px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;margin-right:4px}
 .bm-pos{background:var(--c1-pale);color:var(--c1)}
@@ -176,21 +181,17 @@ textarea.feedback-input:focus{border-color:var(--c1);box-shadow:0 0 0 3px rgba(3
 .chat-bubble.marked-pos{border-color:var(--c1) !important;background:var(--c1-pale) !important}
 .chat-bubble.marked-neg{border-color:var(--c3) !important;background:var(--c3-pale) !important}
 
-/* ===== 回饋計數條 ===== */
 .feedback-counter{text-align:center;font-size:15px;color:var(--gray-700);font-weight:700;margin:12px 0;padding:12px;background:var(--c4-light);border-radius:10px}
 .feedback-counter strong{color:var(--c1)}
 .feedback-counter .neg-count{color:var(--c3);font-weight:700}
 
-/* ===== 歷史回饋 ===== */
 .history-btn{background:var(--c4-light);color:var(--c4);border:1.5px solid var(--c4);padding:6px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;margin-left:auto}
 .history-btn:hover{background:var(--c4);color:#fff}
 
-/* ===== 傳送狀態 ===== */
 .sync-status{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:10px;font-size:13px;font-weight:500;z-index:9999;transition:opacity .3s;pointer-events:none}
 .sync-ok{background:var(--c1);color:#fff;box-shadow:0 4px 12px rgba(38,110,151,0.3)}
 .sync-fail{background:var(--c3);color:#fff;box-shadow:0 4px 12px rgba(238,99,69,0.3)}
 
-/* ===== 版本號（左下角小字） ===== */
 .version-tag{position:fixed;bottom:8px;left:8px;font-size:10px;color:var(--gray-300);opacity:0.5;pointer-events:none;z-index:1}
 
 @media(max-width:480px){.app{padding:12px 10px 40px}.card{padding:20px 16px}.likert-btn{font-size:13px;padding:8px 1px}.likert-labels{font-size:12px}.flow-chart{gap:0;padding:14px 6px}.flow-icon{width:32px;height:32px;font-size:12px}.flow-label{font-size:10px;max-width:48px}.flow-arrow{font-size:12px}.chat-body{max-height:400px}.chat-bubble{max-width:85%}}
@@ -246,7 +247,7 @@ textarea.feedback-input:focus{border-color:var(--c1);box-shadow:0 0 0 3px rgba(3
       </svg>
     </div>
   </div>
-  <div class="card">
+  <div class="card" id="login-card">
     <div class="card-title"><div class="icon icon-purple">🔑</div>登入</div>
     <div class="form-group">
       <label class="form-label">請輸入學號<span class="required">*</span></label>
@@ -257,7 +258,26 @@ textarea.feedback-input:focus{border-color:var(--c1);box-shadow:0 0 0 3px rgba(3
       <input class="form-input" id="login-id2" placeholder="再次輸入確認" maxlength="20" style="text-transform:uppercase">
     </div>
     <div class="error-msg" id="login-error"></div>
-    <button class="btn btn-primary btn-block" onclick="handleLogin()">進入平台</button>
+    <button class="btn btn-primary btn-block" id="login-btn" onclick="handleLogin()">進入平台</button>
+  </div>
+
+  <!-- v2.3 新增：載入中提示 -->
+  <div class="card" id="login-loading-card" style="display:none">
+    <div class="login-loading">
+      <div class="spinner"></div>
+      <div style="font-weight:700;font-size:16px;margin-bottom:6px">正在載入您的進度...</div>
+      <div style="font-size:13px;color:var(--gray-500)">請稍候，正在從伺服器恢復您之前做過的內容</div>
+    </div>
+  </div>
+
+  <!-- v2.3 新增：載入失敗 + 重試 -->
+  <div class="card" id="login-error-card" style="display:none">
+    <div class="login-error-box show">
+      <div class="err-icon">⚠️</div>
+      <div class="err-title">連線失敗</div>
+      <div class="err-text" id="login-err-detail">無法連接到伺服器，可能是網路不穩定，請按下方按鈕重試。</div>
+      <button class="btn-retry-login" onclick="retryLogin()">重新嘗試</button>
+    </div>
   </div>
 </div>
 
@@ -319,7 +339,6 @@ textarea.feedback-input:focus{border-color:var(--c1);box-shadow:0 0 0 3px rgba(3
   <div class="topbar"><div class="topbar-user">您好，<strong id="dash-name"></strong></div><button class="btn-logout" onclick="handleLogout()">⏻ 登出</button></div>
   <div class="card">
     <div class="card-title"><div class="icon icon-purple">📊</div>課程總覽</div>
-    <!-- v2.2 新增：未完成提醒橫條（僅在有 draft 但未送出時顯示） -->
     <div class="dash-incomplete-banner" id="dash-incomplete-banner" style="display:none">
       <span class="banner-icon">⚠️</span>
       <div>您有未完成的階段，請點橘色「<strong>繼續填寫</strong>」按鈕完成</div>
@@ -330,13 +349,12 @@ textarea.feedback-input:focus{border-color:var(--c1);box-shadow:0 0 0 3px rgba(3
   </div>
 </div>
 
-<!-- FEEDBACK (with video + Social AI chat) -->
+<!-- FEEDBACK -->
 <div class="page" id="page-feedback">
   <div class="topbar"><button class="btn-outline" onclick="leaveFeedback()">← 返回總覽</button><button class="btn-logout" onclick="handleLogout()">⏻ 登出</button></div>
   <div class="card">
     <div class="card-title" id="fb-title"></div>
 
-    <!-- 草稿恢復提示 -->
     <div class="draft-banner" id="draft-banner" style="display:none">
       <span class="draft-icon">📝</span>
       <div>
@@ -351,7 +369,6 @@ textarea.feedback-input:focus{border-color:var(--c1);box-shadow:0 0 0 3px rgba(3
     </div>
     <div id="fb-prompt" style="background:var(--c1-pale);border-radius:12px;padding:14px 16px;margin-bottom:20px;font-size:15px;color:var(--c1);border:1.5px solid var(--c1)"></div>
 
-    <!-- Conclusion with preview/confirm -->
     <div class="conclusion-section" id="conclusion-section">
       <div class="conclusion-label">📌 小組結論答案<span class="required">*</span></div>
       <p style="font-size:13px;color:var(--gray-500);margin-bottom:8px">請填寫小組討論後的最終結論，確認後將送至「購物智囊團」取得回饋</p>
@@ -367,7 +384,6 @@ textarea.feedback-input:focus{border-color:var(--c1);box-shadow:0 0 0 3px rgba(3
       </div>
     </div>
 
-    <!-- AI 錯誤提示框 -->
     <div class="ai-error-box" id="ai-error-box" style="display:none">
       <div class="err-icon">⚠️</div>
       <div class="err-title">購物智囊團暫時沒有回應</div>
@@ -375,7 +391,6 @@ textarea.feedback-input:focus{border-color:var(--c1);box-shadow:0 0 0 3px rgba(3
       <button class="btn-retry" onclick="retryAI()">重新請購物智囊團回饋</button>
     </div>
 
-    <!-- Chat UI (hidden until AI responds) -->
     <div id="chat-section" style="display:none">
       <div class="chat-container">
         <div class="chat-header">
@@ -385,12 +400,10 @@ textarea.feedback-input:focus{border-color:var(--c1);box-shadow:0 0 0 3px rgba(3
             <div style="font-size:11px;opacity:0.8;font-weight:400">8 位不同消費風格的虛擬成員，從各自的角度給你回饋</div>
           </div>
         </div>
-        <!-- Member intro -->
         <div class="chat-members" id="chat-members">
           <div class="chat-members-title">成員介紹</div>
           <div class="chat-members-grid" id="chat-members-grid"></div>
         </div>
-        <!-- Instruction -->
         <div id="chat-instruction" style="display:none;padding:12px 14px;background:var(--c3-light);border-bottom:1px solid rgba(238,99,69,0.15);font-size:14px;color:var(--gray-800);line-height:1.6">
           <strong style="color:var(--c3)">📋 以下是購物智囊團成員針對你的結論，給出的正反不同意見回饋。</strong><br>
           請從中選擇 <strong style="color:var(--c1)">3 個正面回饋（按 👍 正面）</strong>和 <strong style="color:var(--c3)">3 個反面意見（按 👎 反面）</strong>，選完後按下方「送出回饋紀錄」。
@@ -398,7 +411,6 @@ textarea.feedback-input:focus{border-color:var(--c1);box-shadow:0 0 0 3px rgba(3
         <div class="chat-body" id="chat-body"></div>
       </div>
 
-      <!-- Counter + submit (shown after all messages appear) -->
       <div id="feedback-bar" style="display:none">
         <div class="feedback-counter" id="feedback-counter">已選：正面 <strong>0</strong>/3　反面 <span class="neg-count">0</span>/3</div>
         <button class="btn btn-primary btn-block" style="margin-top:8px" id="btn-submit-feedback" onclick="handleFeedback()" disabled>送出回饋紀錄</button>
@@ -446,24 +458,29 @@ textarea.feedback-input:focus{border-color:var(--c1);box-shadow:0 0 0 3px rgba(3
 
 </div>
 <div class="sync-status" id="sync-status" style="opacity:0"></div>
-<div class="version-tag">v2.2-20260427</div>
+<div class="version-tag">v2.3-20260428</div>
 
 <script>
-// ===== 版 B 實驗組 - v2.2（2026-04-27）=====
-// 本次修復（v2.2）：
-//   1. Dashboard 加未完成提醒橫條（橘色，閃爍動畫，僅在「有 draft 但未送出」時顯示）
-// 保留 v2.1 的修復：
-//   - AI 罐頭話 bug 已移除
-//   - 雙重付費已修復
-//   - draft 自動儲存（結論 / 16 則 AI / 已選 3+3）
-// 本次修復（v2.2）只動 HTML/CSS/JS 視覺，不影響資料邏輯
-// Code.gs 不動、Sheet 結構不動、資料送出格式不動、現有 30 筆資料不影響
+// ===== 版 B 實驗組 - v2.3（2026-04-28）=====
+// 本次修復（v2.3）：
+//   1. 解決 Safari ITP 7 天清 localStorage 問題
+//      → 學生輸入學號後，先從 Sheet 查詢進度，如有資料自動恢復
+//      → iPhone 學生即使 localStorage 被清，也能從 Sheet 恢復進度
+//   2. API 失敗 → 顯示「連線失敗」+ 重試按鈕（保護學生進度）
+// 保留 v2.2 / v2.1 修復：
+//   - Dashboard 未完成提醒橫條
+//   - draft 自動儲存 / 歷史回饋 / AI 失敗重試 / 雙重付費修復 / 罐頭話 bug 移除
+// 不影響：
+//   - SHEET_URL 不變（用 Manage Deployments → New Version 部署）
+//   - localStorage key 不變
+//   - 送資料格式不變
+//   - Sheet 結構不變
+//   - 現有 30+ 筆學生資料完全不受影響
 // =====================================================
 
 const LIKERT_N=7;
 const SHEET_URL='https://script.google.com/macros/s/AKfycbwfdUbdOzph6jk9avhWVnzUus_Lf16kcCdmGQkzNGZYnIOO4_iQ2zcxWI-_xbd9TS2Klg/exec';
 
-// 8 personas
 const PERSONAS=[
   {id:'pinpin',name:'品品',style:'品質控',color:'#266E97',emoji:'🔍',desc:'追求最高品質，挑剔細節'},
   {id:'brand',name:'名牌哥',style:'品牌控',color:'#5E6D9B',emoji:'👔',desc:'認為貴就是好，重視品牌'},
@@ -477,11 +494,11 @@ const PERSONAS=[
 
 const STAGES=[
   {id:0,title:'課程說明',sub:'Course Introduction',prompt:'',video:'f0f7N0pyNs4',isCourse:true},
-  {id:1,title:'階段一：需求認知',sub:'Need Recognition',prompt:'我們發現了這個消費者需求：[請描述你們的痛點與情境]。這是一個真實且迫切的需求嗎？',video:'7CsE5MrogBI'},
-  {id:2,title:'階段二：資訊蒐集',sub:'Information Search',prompt:'針對這個產品，你會從哪裡蒐集資訊？你最擔心什麼風險？',video:'00pYNICw5uo'},
-  {id:3,title:'階段三：方案評估',sub:'Evaluation of Alternatives',prompt:'我們比較了三個品牌 [請列出]，最終選了 [X]。你會選哪個？為什麼？我們的評估有什麼盲點嗎？',video:'bxBbJL4c3QM'},
-  {id:4,title:'階段四：購買決策',sub:'Purchase Decision',prompt:'我們決定買 [X] 了，但室友說那品牌很爛。你覺得該聽他的嗎？為什麼？',video:'2wZFd8zrTfg'},
-  {id:5,title:'階段五：購後行為',sub:'Post-Purchase Behavior',prompt:'買了之後發現 [請描述問題]。如果是你，會退貨還是留著？為什麼？',video:'PR_ELIZpB2o'},
+  {id:1,title:'階段一:需求認知',sub:'Need Recognition',prompt:'我們發現了這個消費者需求：[請描述你們的痛點與情境]。這是一個真實且迫切的需求嗎？',video:'7CsE5MrogBI'},
+  {id:2,title:'階段二:資訊蒐集',sub:'Information Search',prompt:'針對這個產品，你會從哪裡蒐集資訊？你最擔心什麼風險？',video:'00pYNICw5uo'},
+  {id:3,title:'階段三:方案評估',sub:'Evaluation of Alternatives',prompt:'我們比較了三個品牌 [請列出]，最終選了 [X]。你會選哪個？為什麼？我們的評估有什麼盲點嗎？',video:'bxBbJL4c3QM'},
+  {id:4,title:'階段四:購買決策',sub:'Purchase Decision',prompt:'我們決定買 [X] 了，但室友說那品牌很爛。你覺得該聽他的嗎？為什麼？',video:'2wZFd8zrTfg'},
+  {id:5,title:'階段五:購後行為',sub:'Post-Purchase Behavior',prompt:'買了之後發現 [請描述問題]。如果是你，會退貨還是留著？為什麼？',video:'PR_ELIZpB2o'},
   {id:6,title:'期末報告與後測',sub:'Final Report & Post-Test',prompt:'',video:'mfrM5OF20HE',isFinal:true},
 ];
 
@@ -577,6 +594,7 @@ const POSTTEST=[
 ];
 
 let state={},currentStage=null,currentAIResponses=[];
+let pendingLoginId='';  // v2.3 新增：記錄正在 retry 的學號
 function loadState(){const s=localStorage.getItem('socialai_exp_v1');if(s)state=JSON.parse(s)}
 function saveState(){localStorage.setItem('socialai_exp_v1',JSON.stringify(state))}
 
@@ -612,27 +630,122 @@ function leaveFeedback(){
     saveCurrentDraft();
   }
   document.getElementById('fb-video').src='';showPage('page-dashboard');
-  // 回 Dashboard 後重新渲染（讓橫條和徽章狀態更新）
   renderDashboard();
 }
 
-// ===== LOGIN =====
+// ===== LOGIN（v2.3 大幅改寫）=====
 let loginStep=1;
+
 function handleLogin(){
   const id1=document.getElementById('login-id1').value.trim().toUpperCase();
   const err=document.getElementById('login-error');
   if(!id1){err.textContent='請輸入學號';err.classList.add('show');return}
+
   loadState();
-  const returning=state.studentId===id1&&state.consented&&state.pretest;
-  if(returning){err.classList.remove('show');loginStep=1;if(state.posttest_done){showPage('page-thankyou')}else{fillDemoFromState();showPage('page-demo')}}
-  else{
-    if(loginStep===1){document.getElementById('login-id2-group').style.display='block';document.getElementById('login-id2').focus();err.textContent='首次登入，請再次輸入學號確認';err.classList.add('show');err.style.color='var(--c1)';loginStep=2;return}
-    const id2=document.getElementById('login-id2').value.trim().toUpperCase();
-    if(!id2){err.textContent='請再次輸入學號確認';err.style.color='';err.classList.add('show');return}
-    if(id1!==id2){err.textContent='兩次輸入的學號不一致';err.style.color='';err.classList.add('show');return}
-    err.classList.remove('show');err.style.color='';loginStep=1;
-    state={studentId:id1,group:'experiment'};saveState();showPage('page-consent');
+
+  // 階段 1：先看 localStorage 有沒有這個學號的完整資料
+  const localFull=state.studentId===id1&&state.consented&&state.pretest;
+  if(localFull){
+    // localStorage 完整 → 直接走 returning（不用查 Sheet）
+    err.classList.remove('show');loginStep=1;
+    if(state.posttest_done){showPage('page-thankyou')}
+    else{fillDemoFromState();showPage('page-demo')}
+    return;
   }
+
+  // 階段 2：localStorage 不完整 → 從 Sheet 查詢
+  err.classList.remove('show');
+  pendingLoginId = id1;
+  fetchStudentFromSheet(id1);
+}
+
+// v2.3 新增：從 Sheet 查詢學生
+function fetchStudentFromSheet(studentId){
+  // 顯示載入中
+  document.getElementById('login-card').style.display='none';
+  document.getElementById('login-error-card').style.display='none';
+  document.getElementById('login-loading-card').style.display='block';
+
+  const url = SHEET_URL + '?action=load&studentId=' + encodeURIComponent(studentId);
+
+  fetch(url, {method:'GET'})
+    .then(function(r){
+      if(!r.ok) throw new Error('伺服器回應錯誤 ' + r.status);
+      return r.text();
+    })
+    .then(function(raw){
+      var data;
+      try{ data = JSON.parse(raw); }
+      catch(e){ throw new Error('伺服器回應格式錯誤'); }
+
+      // 結果 A：Sheet 有這個學號 → 載入並走 returning
+      if(data.status === 'ok' && data.data){
+        state = data.data;
+        saveState();
+        document.getElementById('login-loading-card').style.display='none';
+        document.getElementById('login-card').style.display='block';
+
+        if(state.posttest_done){
+          showPage('page-thankyou');
+        }else if(state.consented && state.pretest){
+          fillDemoFromState();
+          showPage('page-demo');
+        }else{
+          // 同意書/前測沒做完 → 走全新流程
+          startFreshLogin(studentId);
+        }
+        return;
+      }
+
+      // 結果 B：Sheet 沒這個學號 → 全新使用者
+      if(data.status === 'not_found'){
+        document.getElementById('login-loading-card').style.display='none';
+        document.getElementById('login-card').style.display='block';
+        startFreshLogin(studentId);
+        return;
+      }
+
+      // 其他狀況（Code.gs 出錯）→ 顯示錯誤
+      throw new Error(data.message || '伺服器回應異常');
+    })
+    .catch(function(err){
+      console.error('Login fetch error:', err);
+      document.getElementById('login-loading-card').style.display='none';
+      document.getElementById('login-error-card').style.display='block';
+      document.getElementById('login-err-detail').textContent =
+        '無法連接到伺服器：' + err.message + '。請確認網路連線後按下方按鈕重試。';
+    });
+}
+
+// v2.3 新增：API 失敗時的「重試」
+function retryLogin(){
+  if(pendingLoginId){
+    fetchStudentFromSheet(pendingLoginId);
+  }else{
+    document.getElementById('login-error-card').style.display='none';
+    document.getElementById('login-card').style.display='block';
+  }
+}
+
+// 走全新流程：兩次學號 → 同意書 → 基本資料 → 前測
+function startFreshLogin(id1){
+  const err=document.getElementById('login-error');
+  if(loginStep===1){
+    document.getElementById('login-id2-group').style.display='block';
+    document.getElementById('login-id2').focus();
+    err.textContent='首次登入，請再次輸入學號確認';
+    err.classList.add('show');
+    err.style.color='var(--c1)';
+    loginStep=2;
+    return;
+  }
+  const id2=document.getElementById('login-id2').value.trim().toUpperCase();
+  if(!id2){err.textContent='請再次輸入學號確認';err.style.color='';err.classList.add('show');return}
+  if(id1!==id2){err.textContent='兩次輸入的學號不一致';err.style.color='';err.classList.add('show');return}
+  err.classList.remove('show');err.style.color='';loginStep=1;
+  state={studentId:id1,group:'experiment'};
+  saveState();
+  showPage('page-consent');
 }
 
 function fillDemoFromState(){
@@ -641,7 +754,7 @@ function fillDemoFromState(){
   document.getElementById('demo-dept').value=state.dept||'';
   ['gender','grade','spending','ai','aitool','aifreq'].forEach(f=>{
     const key={gender:'gender',grade:'grade',spending:'spending',ai:'ai_familiarity',aitool:'ai_tool',aifreq:'ai_freq'}[f];
-    if(state[key]){document.querySelectorAll('#demo-'+f+' input, #demo-'+f.replace(/([A-Z])/g,m=>m.toLowerCase())+' input').forEach(inp=>{if(inp.value===state[key]){inp.checked=true;inp.closest('.radio-option').classList.add('selected')}})}
+    if(state[key]){document.querySelectorAll('#demo-'+f+' input').forEach(inp=>{if(inp.value===state[key]){inp.checked=true;inp.closest('.radio-option').classList.add('selected')}})}
   });
   document.getElementById('demo-header-sub').textContent='確認基本資料';
   document.getElementById('demo-card-title').textContent='確認基本資料';
@@ -705,7 +818,7 @@ function renderFlowChart(){
   const steps=[
     {label:'前測',done:pretestDone},
     {label:'課程\n說明',done:!!(state.stages&&state.stages[0]),current:pretestDone&&!(state.stages&&state.stages[0])},
-    ...taskStages.map((s,i)=>({label:s.title.replace(/階段.：/,''),done:!!(state.stages&&state.stages[s.id]),current:!!(state.stages&&state.stages[0])&&pretestDone&&i===firstIncomplete&&!(state.stages&&state.stages[s.id]),locked:i>firstIncomplete||!(state.stages&&state.stages[0])})),
+    ...taskStages.map((s,i)=>({label:s.title.replace(/階段.[：:]/,''),done:!!(state.stages&&state.stages[s.id]),current:!!(state.stages&&state.stages[0])&&pretestDone&&i===firstIncomplete&&!(state.stages&&state.stages[s.id]),locked:i>firstIncomplete||!(state.stages&&state.stages[0])})),
     {label:'期末\n報告',done:!!(state.stages&&state.stages[6]),current:allTasksDone&&!(state.stages&&state.stages[6]),locked:!allTasksDone},
     {label:'後測',done:posttestDone,current:!!(state.stages&&state.stages[6])&&!posttestDone,locked:!(state.stages&&state.stages[6])}
   ];
@@ -729,18 +842,13 @@ function renderDashboard(){
   let firstIncomplete=taskStages.length;
   for(let i=0;i<taskStages.length;i++){if(!state.stages[taskStages[i].id]){firstIncomplete=i;break}}
 
-  // v2.2 新增：判斷是否要顯示「未完成提醒橫條」
-  // 條件：階段 1-5 任一個有 draft 但未送出（state.stages[i] 不存在）
+  // 未完成提醒橫條
   let hasIncompleteWithDraft=false;
   taskStages.forEach(s=>{
-    if(!state.stages[s.id]&&hasDraft(s.id)){
-      hasIncompleteWithDraft=true;
-    }
+    if(!state.stages[s.id]&&hasDraft(s.id)){hasIncompleteWithDraft=true}
   });
   const banner=document.getElementById('dash-incomplete-banner');
-  if(banner){
-    banner.style.display=hasIncompleteWithDraft?'flex':'none';
-  }
+  if(banner){banner.style.display=hasIncompleteWithDraft?'flex':'none'}
 
   STAGES.forEach(s=>{
     const done=!!state.stages[s.id];
@@ -769,7 +877,6 @@ function renderDashboard(){
     }
     list.appendChild(div);
   });
-  // Post-test
   const allDone=taskStages.every(ts=>state.stages[ts.id])&&state.stages[6];
   const ptDiv=document.createElement('div');
   ptDiv.className=`stage-item ${state.posttest_done?'completed':allDone?'':'locked'}`;
@@ -792,7 +899,7 @@ function openCourseIntro(){
   let btn=document.getElementById('btn-course-confirm');
   if(!btn){btn=document.createElement('button');btn.id='btn-course-confirm';btn.className='btn btn-primary btn-block';btn.style.marginTop='16px';document.querySelector('#page-feedback .card').appendChild(btn)}
   btn.textContent='我已觀看課程說明';btn.style.display='block';
-  btn.onclick=()=>{if(!state.stages)state.stages={};state.stages[0]={time:new Date().toISOString()};saveState();renderDashboard();showPage('page-dashboard')};
+  btn.onclick=()=>{if(!state.stages)state.stages={};state.stages[0]={time:new Date().toISOString()};saveState();document.getElementById('fb-video').src='';renderDashboard();showPage('page-dashboard')};
   showPage('page-feedback');
 }
 function openFinalReport(){
@@ -808,11 +915,11 @@ function openFinalReport(){
   let btn=document.getElementById('btn-course-confirm');
   if(!btn){btn=document.createElement('button');btn.id='btn-course-confirm';btn.className='btn btn-primary btn-block';btn.style.marginTop='16px';document.querySelector('#page-feedback .card').appendChild(btn)}
   btn.textContent='我已觀看期末報告說明';btn.style.display='block';
-  btn.onclick=()=>{if(!state.stages)state.stages={};state.stages[6]={time:new Date().toISOString()};saveState();renderDashboard();showPage('page-dashboard')};
+  btn.onclick=()=>{if(!state.stages)state.stages={};state.stages[6]={time:new Date().toISOString()};saveState();document.getElementById('fb-video').src='';renderDashboard();showPage('page-dashboard')};
   showPage('page-feedback');
 }
 
-// ===== FEEDBACK (stages 1-5) =====
+// ===== FEEDBACK =====
 function openFeedback(stageId){
   if(state.stages&&state.stages[stageId])return;
   currentStage=STAGES.find(s=>s.id===stageId);
@@ -885,7 +992,6 @@ function editConclusion(){
   document.getElementById('btn-preview').style.display='block';
 }
 
-// ===== 呼叫 AI（只 call 一次，失敗不用罐頭話）=====
 function sendToAI(){
   const conclusion=document.getElementById('fb-conclusion').value.trim();
   document.getElementById('fb-conclusion').disabled=true;
@@ -1143,7 +1249,7 @@ function openHistory(stageId){
   const data=state.stages[stageId];if(!data)return;
   document.getElementById('hist-title').textContent=s.title+'：回饋紀錄';
   document.getElementById('hist-conclusion').innerHTML=`<div style="font-weight:700;color:var(--c1);margin-bottom:6px">📌 小組結論</div><div>${escapeHtml(data.conclusion||'')}</div>`;
-  const chatHtml=(data.ai_responses||[]).map(r=>`<div style="display:flex;gap:8px;margin-bottom:8px"><div style="width:28px;height:28px;border-radius:50%;background:var(--c4);display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;flex-shrink:0">💬</div><div><div style="font-size:11px;font-weight:700;color:var(--gray-500)">${escapeHtml(r.persona)}（${escapeHtml(r.style)}）</div><div style="font-size:14px">${escapeHtml(r.text)}</div></div></div>`).join('');
+  const chatHtml=(data.ai_responses||[]).map(r=>`<div style="display:flex;gap:8px;margin-bottom:8px"><div style="width:28px;height:28px;border-radius:50%;background:var(--c4);display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;flex-shrink:0">💬</div><div><div style="font-size:11px;font-weight:700;color:var(--gray-500)">${escapeHtml(r.persona)}（${escapeHtml(r.style||'')}）</div><div style="font-size:14px">${escapeHtml(r.text)}</div></div></div>`).join('');
   document.getElementById('hist-chat').innerHTML=chatHtml?`<div style="font-weight:700;color:var(--c1);margin-bottom:8px">🛒 購物智囊團回覆</div>${chatHtml}`:'';
   const selHtml=`<div style="font-weight:700;color:var(--c1);margin-bottom:8px">你的選擇</div><div style="margin-bottom:8px"><strong>👍 正面：</strong>${(data.positive||[]).map((t,i)=>`<div style="padding:4px 0;font-size:14px">${i+1}. ${escapeHtml(t)}</div>`).join('')}</div><div><strong>👎 反面：</strong>${(data.negative||[]).map((t,i)=>`<div style="padding:4px 0;font-size:14px">${i+1}. ${escapeHtml(t)}</div>`).join('')}</div>`;
   document.getElementById('hist-selected').innerHTML=selHtml;
@@ -1174,7 +1280,11 @@ function handleLogout(){
   document.getElementById('login-id2').value='';
   document.getElementById('login-id2-group').style.display='none';
   document.getElementById('login-error').classList.remove('show');
+  document.getElementById('login-card').style.display='block';
+  document.getElementById('login-loading-card').style.display='none';
+  document.getElementById('login-error-card').style.display='none';
   loginStep=1;
+  pendingLoginId='';
 }
 </script>
 </body>

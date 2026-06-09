@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>後測補做 — 消費者決策研究（實驗組B）</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+:root{
+  --c1:#266E97;--c3:#EE6345;--c5:#83DDC6;
+  --c1-light:#D6EAF2;--c1-pale:#EBF4F9;--c3-light:#FDDDD6;--c3-pale:#FEF0EC;--c5-pale:#EDF9F5;
+  --gray-100:#f0f0f2;--gray-200:#d8d8dc;--gray-300:#bbbbc2;--gray-400:#7A7A85;--gray-500:#555560;--gray-600:#3D3D47;--gray-800:#1A1A22;
+  --bg:#EBF4F9;--radius:16px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);min-height:100vh;color:var(--gray-800);line-height:1.7}
+.app{max-width:720px;margin:0 auto;padding:20px 16px 80px}
+.header{text-align:center;padding:28px 0 20px}
+.header h1{font-size:24px;font-weight:700;color:var(--c1)}
+.header p{font-size:15px;color:var(--gray-600);margin-top:6px;font-weight:600}
+.card{background:#fff;border:1px solid rgba(38,110,151,0.15);border-radius:var(--radius);padding:26px 22px;margin-bottom:16px;box-shadow:0 4px 24px rgba(0,0,0,0.08)}
+.card-title{font-size:19px;font-weight:700;color:var(--c1);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.card-title .icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;background:var(--c3-light);color:var(--c3)}
+.form-label{display:block;font-size:15px;font-weight:600;margin-bottom:6px}
+.required{color:var(--c3);margin-left:2px}
+.form-input{width:100%;padding:12px 14px;border:1.5px solid var(--gray-200);border-radius:10px;font-size:16px;font-family:inherit;background:#fff;outline:none;transition:border-color .2s}
+.form-input:focus{border-color:var(--c1);box-shadow:0 0 0 3px rgba(38,110,151,0.12)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 28px;border:none;border-radius:12px;font-size:16px;font-weight:700;font-family:inherit;cursor:pointer;transition:all .2s}
+.btn-primary{background:var(--c1);color:#fff;box-shadow:0 4px 16px rgba(38,110,151,0.3)}
+.btn-primary:hover{transform:translateY(-1px)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-outline{background:transparent;border:2px solid var(--c1);color:var(--c1);padding:10px 18px;font-size:15px;border-radius:10px}
+.btn-block{width:100%}
+.error-msg{font-size:14px;color:var(--c3);margin-top:8px;display:none}
+.error-msg.show{display:block}
+.confirm-banner{background:var(--c5-pale);border:1.5px solid var(--c5);border-radius:12px;padding:16px;margin-bottom:18px;font-size:16px;color:var(--c1)}
+.confirm-banner strong{font-size:20px;letter-spacing:.5px}
+.section-header{font-size:17px;font-weight:700;color:var(--c1);margin:26px 0 8px;padding-top:18px;border-top:2px solid var(--gray-200)}
+.section-header:first-child{border-top:none;margin-top:0;padding-top:0}
+.section-sub{font-size:13px;font-weight:500;color:var(--gray-500);margin-left:8px}
+.q-item{padding:16px 0;border-bottom:1px solid var(--gray-100)}
+.q-item:last-child{border-bottom:none}
+.q-item.missing{background:rgba(238,99,69,.06);border-radius:8px;padding:16px 12px;border:1px solid rgba(238,99,69,.25)}
+.q-text{font-size:16px;font-weight:500;margin-bottom:10px}
+.q-num{font-weight:700;color:var(--c1);margin-right:6px}
+.likert-row{display:flex;gap:4px;justify-content:center;margin-top:8px}
+.likert-btn{flex:1;padding:10px 2px;border:1.5px solid var(--gray-200);border-radius:8px;background:#fff;cursor:pointer;font-size:15px;font-family:inherit;font-weight:600;min-width:0;transition:all .2s}
+.likert-btn:hover{border-color:var(--c1);background:var(--c1-pale)}
+.likert-btn.selected{border-color:var(--c1);background:var(--c1);color:#fff}
+.likert-labels{display:flex;justify-content:space-between;font-size:14px;color:var(--gray-600);margin-top:6px;padding:0 4px;font-weight:600}
+.radio-group{display:flex;flex-direction:column;gap:8px}
+.radio-option{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid var(--gray-200);border-radius:10px;cursor:pointer;transition:all .2s;font-size:15px;font-weight:500}
+.radio-option:hover{border-color:var(--c1);background:var(--c1-pale)}
+.radio-option.selected{border-color:var(--c1);background:var(--c1-pale)}
+.radio-option input{display:none}
+.radio-dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--gray-300);flex-shrink:0;transition:all .2s}
+.radio-option.selected .radio-dot{border-color:var(--c1);background:var(--c1);box-shadow:inset 0 0 0 3px #fff}
+.scale-note{font-size:15px;font-weight:700;background:var(--c3-light);padding:8px 12px;border-radius:8px;margin-bottom:16px}
+.page{display:none}.page.active{display:block}
+.status-box{border-radius:12px;padding:18px 20px;margin-top:16px;text-align:center;display:none}
+.status-box.show{display:block}
+.status-fail{background:var(--c3-pale);border:2px solid var(--c3)}
+.status-fail .t{font-weight:700;color:var(--c3);margin-bottom:6px}
+.status-fail .d{font-size:14px;color:var(--gray-600);margin-bottom:12px}
+.spinner{display:inline-block;width:30px;height:30px;border:3px solid var(--c1-pale);border-top-color:var(--c1);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.thank{text-align:center;padding:40px 20px}
+.thank .big{font-size:48px;margin-bottom:10px}
+.thank h2{font-size:26px;color:var(--c1);margin-bottom:12px}
+@media(max-width:480px){.app{padding:12px 10px 40px}.card{padding:20px 16px}.likert-btn{font-size:13px;padding:8px 1px}.likert-labels{font-size:12px}}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="header">
+    <h1>消費者決策研究</h1>
+    <p>後測補做（實驗組B）</p>
+  </div>
+
+  <!-- 步驟1：輸入學號 -->
+  <div class="page active" id="page-login">
+    <div class="card">
+      <div class="card-title"><div class="icon">🔑</div>請輸入學號</div>
+      <p style="font-size:14px;color:var(--gray-500);margin-bottom:14px">此頁僅供「補做後測」使用，不需重做前面的階段。</p>
+      <label class="form-label">學號<span class="required">*</span></label>
+      <input class="form-input" id="login-id" placeholder="例：B11234567" maxlength="20" style="text-transform:uppercase">
+      <div class="error-msg" id="login-error"></div>
+      <button class="btn btn-primary btn-block" style="margin-top:16px" onclick="goConfirm()">下一步</button>
+    </div>
+  </div>
+
+  <!-- 步驟2：確認學號 -->
+  <div class="page" id="page-confirm">
+    <div class="card">
+      <div class="card-title"><div class="icon">✅</div>確認學號</div>
+      <div class="confirm-banner">
+        您正在補做後測：<br><strong id="confirm-id"></strong><br>
+        <span style="font-size:14px;color:var(--gray-600)">請確認學號無誤後再開始作答，以免分數寫到別人那裡。</span>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-outline" style="flex:1" onclick="backToLogin()">← 改學號</button>
+        <button class="btn btn-primary" style="flex:1" onclick="startPosttest()">確認，開始填寫</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 步驟3：後測題目 -->
+  <div class="page" id="page-posttest">
+    <div class="card">
+      <div class="card-title"><div class="icon">📝</div>後測問卷</div>
+      <p style="font-size:14px;color:var(--gray-500);margin-bottom:4px">作答學號：<strong id="pt-id"></strong></p>
+      <p style="font-size:14px;color:var(--gray-500);margin-bottom:10px">請依據您參與本課程後的真實感受作答。</p>
+      <p class="scale-note">Likert量表：1＝非常不同意 ～ 7＝非常同意（知識測驗除外）</p>
+      <div id="posttest-items"></div>
+      <button class="btn btn-primary btn-block" style="margin-top:20px" id="submit-btn" onclick="submitPosttest()">送出後測</button>
+      <!-- 送出失敗時顯示，可重送 -->
+      <div class="status-box status-fail" id="status-fail">
+        <div class="t">⚠️ 儲存失敗，資料尚未送出</div>
+        <div class="d" id="status-fail-detail">請確認網路連線後，按下方按鈕重送。您的答案都還在，不會消失。</div>
+        <button class="btn btn-primary" onclick="submitPosttest()">重新送出</button>
+      </div>
+      <!-- 送出中遮罩 -->
+      <div id="sending-mask" style="display:none;text-align:center;padding:20px;margin-top:12px">
+        <div class="spinner"></div>
+        <div style="margin-top:10px;color:var(--c1);font-weight:600">正在儲存，請稍候，不要關閉頁面…</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 步驟4：完成 -->
+  <div class="page" id="page-thankyou">
+    <div class="card thank">
+      <div class="big">🎉</div>
+      <h2>後測已成功儲存！</h2>
+      <p style="color:var(--gray-600);font-size:16px">感謝您完成補做，您的後測分數已記錄。可以關閉此頁面了。</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// =====================================================
+// 後測補做單頁 — 版B 實驗組（2026-06）
+// 設計重點：
+//   1. 完全獨立，不依賴 localStorage、不經過 5 階段流程
+//   2. 直接用學號補寫後測，重用後端既有的 writePosttest（type:'posttest'）
+//   3. 「確認式」送出：伺服器回 ok 才算成功；失敗保留答案、可重送
+//   4. 允許重送，後送覆蓋前送（最簡單，不另外擋重複）
+//   ※ 後端 Code.gs / Sheet 結構 / 部署網址都不需更動
+// =====================================================
+
+// 後端網址（與正式 index.html 相同）
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwfdUbdOzph6jk9avhWVnzUus_Lf16kcCdmGQkzNGZYnIOO4_iQ2zcxWI-_xbd9TS2Klg/exec';
+const LIKERT_N = 7;
+let currentId = ''; // 目前作答的學號
+
+// ===== 後測題目（與 index.html 的 POSTTEST 完全一致，題目 id 對應後端欄位）=====
+const POSTTEST = [
+  {sec:'自我效能 Self-Efficacy (SE)', items:[
+    {id:'SE1_post', text:'我有信心自己具備有效使用生成式AI的能力。'},
+    {id:'SE2_post', text:'即使身邊沒有人指導，我也相信自己能獨立使用生成式AI。'},
+    {id:'SE3_post', text:'我有信心能將生成式AI的優勢有效地運用在課業中。'},
+  ]},
+  {sec:'互動焦慮 Interaction Anxiety (IA)', items:[
+    {id:'IA1_post', text:'當我和不太熟識的人交談時，我會感到緊張。'},
+    {id:'IA2_post', text:'當我必須向他人談論自己的想法或表現時，我會感到緊張。'},
+    {id:'IA3_post', text:'當我需要向他人尋求協助或建議時，我會感到猶豫。'},
+    {id:'IA4_post', text:'當接收回饋時，我會害怕受到他人的評判。'},
+  ]},
+  {sec:'課程滿意度 Satisfaction (SA)', items:[
+    {id:'SA1', text:'這門課程符合我的期望。'},{id:'SA2', text:'參與這門課程讓我感到愉快。'},
+    {id:'SA3', text:'我覺得這門課程是值得的。'},{id:'SA4', text:'我認為這門課程中的回饋機制對我的學習非常有幫助。'},
+    {id:'SA5', text:'整體而言，我對這門課程感到非常滿意。'},
+  ]},
+  {sec:'學習成效 Learning Performance (LP)', items:[
+    {id:'LP1', text:'我達成了這門課程的學習目標。'},{id:'LP2', text:'我在這門課程中學到了有價值的知識。'},
+    {id:'LP3', text:'我成功完成了這門課程的作業。'},{id:'LP4', text:'整體而言，我覺得自己在這門課程中的學習表現很好。'},
+  ]},
+  {sec:'知識測驗 Knowledge Test (KT)', type:'mc', note:'請選擇最佳答案', items:[
+    {id:'KT1', text:'小美看到YouTuber開箱最新筆電後，突然覺得自己的舊筆電很慢，這屬於哪種刺激？', opts:['(A) 內在刺激','(B) 外在刺激','(C) 理想狀態','(D) 實際狀態']},
+    {id:'KT2', text:'消費者在購買前搜尋資訊，主要目的是？', opts:['(A) 增加購買慾望','(B) 降低知覺風險','(C) 比較價格','(D) 跟隨潮流']},
+    {id:'KT3', text:'小明不管評分如何，只要是Apple就直接買，這屬於？', opts:['(A) 補償性決策','(B) 逐層剔除法','(C) 捷思法','(D) 依序比較法']},
+    {id:'KT4', text:'小華本來要買A牌，室友說「那牌很爛」後改買B牌，影響因素是？', opts:['(A) 知覺風險','(B) 情境因素','(C) 他人的態度','(D) 衝動性購買']},
+    {id:'KT5', text:'買了高價商品後懷疑是否選對，這種心理不適稱為？', opts:['(A) 期望落差','(B) 購後認知失調','(C) 規範性從眾','(D) 衝動性購買']},
+  ]},
+  {sec:'操弄檢核 Manipulation Check (MC)', items:[
+    {id:'MC1', text:'在回饋過程中，我覺得對方理解了我的需求。'},
+    {id:'MC2', text:'我覺得收到的回饋是真誠的。'},
+  ]},
+  {sec:'知覺擬人化 Perceived Anthropomorphism (PA)', items:[
+    {id:'PA1', text:'虛擬AI社群的溝通方式讓我感覺像在跟真人對話。'},
+    {id:'PA2', text:'虛擬AI社群似乎有自己的個性或性格。'},
+    {id:'PA3', text:'在互動中，虛擬AI社群似乎能理解我的情緒或心情。'},
+    {id:'PA4', text:'虛擬AI社群的回應方式感覺自然且像人類一樣。'},
+  ]},
+  {sec:'論點品質 Argument Quality (AQ)', items:[
+    {id:'AQ1', text:'虛擬AI社群在互動中提供的資訊內容豐富且充實。'},
+    {id:'AQ2', text:'虛擬AI社群的建議有充分的證據或理由支持。'},
+    {id:'AQ3', text:'虛擬AI社群提供的論點具備嚴謹且一致的邏輯性。'},
+    {id:'AQ4', text:'虛擬AI社群提出的建議具有洞察力且有深度。'},
+  ]},
+  {sec:'知覺有用性 Perceived Usefulness (PU)', items:[
+    {id:'PU1', text:'使用虛擬AI社群提升了我在完成課程任務時的表現。'},
+    {id:'PU2', text:'使用虛擬AI社群增進了我的學習效能。'},
+    {id:'PU3', text:'使用虛擬AI社群讓我更快速地完成了作業。'},
+    {id:'PU4', text:'我認為使用虛擬AI社群對於處理課業與學習任務是有用的。'},
+  ]},
+  {sec:'社會臨場感 Social Presence (SP)', items:[
+    {id:'SP1', text:'在與虛擬AI社群互動的當下，我感覺我們彷彿身處在同一個空間裡。'},
+    {id:'SP2', text:'在互動過程中，我強烈感受到與虛擬AI社群之間的連結感。'},
+    {id:'SP3', text:'在執行課程任務期間，我覺得與虛擬AI社群的關係是溫暖且自在的。'},
+    {id:'SP4', text:'在學習過程中，我感受到虛擬AI社群給予我相當程度的情感支持。'},
+    {id:'SP5', text:'我在情感上覺得與虛擬AI社群很親近。'},
+  ]},
+  {sec:'知覺信任 Perceived Trust (TR)', items:[
+    {id:'TR1', text:'虛擬AI社群所提供的資訊是令人信服的。'},
+    {id:'TR2', text:'虛擬AI社群所提供的資訊是基於事實的。'},
+    {id:'TR3', text:'虛擬AI社群所提供的資訊是可靠的。'},
+    {id:'TR4', text:'虛擬AI社群所提供的資訊是值得信賴的。'},
+    {id:'TR5', text:'虛擬AI社群所提供的資訊是全面且完整的。'},
+  ]},
+  {sec:'資訊採納 Information Adoption (IP)', items:[
+    {id:'IP1', text:'虛擬AI社群所提供的資訊，使我能輕鬆地為課程任務做出決策。'},
+    {id:'IP2', text:'虛擬AI社群所提供的資訊，提升了我在制定課程作業決策時的效率。'},
+    {id:'IP3', text:'虛擬AI社群所提供的資訊，促使我做出了最終的任務決策。'},
+    {id:'IP4', text:'我根據虛擬AI社群所提供的資訊，來完成了我的課程任務。'},
+  ]},
+  {sec:'持續使用意圖 Continuance Intention (CI)', items:[
+    {id:'CI1', text:'我打算繼續使用虛擬AI社群。'},
+    {id:'CI2', text:'當面臨學習任務時，我會優先考慮使用虛擬AI社群。'},
+    {id:'CI3', text:'在未來的學習任務中，我計畫頻繁地使用虛擬AI社群。'},
+  ]},
+];
+
+// ===== 換頁 =====
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// 步驟1 → 步驟2：驗證學號並進入確認頁
+function goConfirm(){
+  const id = document.getElementById('login-id').value.trim().toUpperCase(); // 統一大寫，與後端比對一致
+  const err = document.getElementById('login-error');
+  if(!id){ err.textContent='請輸入學號'; err.classList.add('show'); return; }
+  err.classList.remove('show');
+  currentId = id;
+  document.getElementById('confirm-id').textContent = id; // 顯示給學生確認
+  showPage('page-confirm');
+}
+function backToLogin(){ showPage('page-login'); }
+
+// 步驟2 → 步驟3：產生題目並進入作答頁
+function startPosttest(){
+  document.getElementById('pt-id').textContent = currentId;
+  renderSurvey();
+  document.getElementById('status-fail').classList.remove('show');
+  showPage('page-posttest');
+}
+
+// ===== 產生題目（Likert 與選擇題兩種）=====
+function renderSurvey(){
+  const c = document.getElementById('posttest-items');
+  c.innerHTML = '';
+  POSTTEST.forEach(sec=>{
+    // 區塊標題
+    const sh = document.createElement('div');
+    sh.className = 'section-header';
+    sh.textContent = sec.sec;
+    if(sec.note) sh.innerHTML += `<span class="section-sub">${sec.note}</span>`;
+    c.appendChild(sh);
+
+    if(sec.type==='mc'){
+      // 知識測驗：單選題
+      sec.items.forEach(item=>{
+        const d = document.createElement('div');
+        d.className = 'q-item'; d.id = 'qi-'+item.id;
+        d.innerHTML = `<div class="q-text"><span class="q-num">${item.id}</span>${item.text}</div>
+          <div class="radio-group" id="mc-${item.id}">
+          ${item.opts.map(o=>`<label class="radio-option" onclick="selRadio(this,'mc-${item.id}')"><input type="radio" name="mc-${item.id}" value="${o.charAt(1)}"><span class="radio-dot"></span>${o}</label>`).join('')}
+          </div>`;
+        c.appendChild(d);
+      });
+    } else {
+      // Likert 1-7
+      sec.items.forEach(item=>{
+        const d = document.createElement('div');
+        d.className = 'q-item'; d.id = 'qi-'+item.id;
+        d.innerHTML = `<div class="q-text"><span class="q-num">${item.id.replace(/_post$/,'')}</span>${item.text}</div>
+          <div class="likert-row">
+          ${Array.from({length:LIKERT_N},(_,i)=>i+1).map(v=>`<button type="button" class="likert-btn" data-id="${item.id}" data-val="${v}" onclick="selLikert(this)">${v}</button>`).join('')}
+          </div>
+          <div class="likert-labels"><span>非常不同意</span><span>非常同意</span></div>`;
+        c.appendChild(d);
+      });
+    }
+  });
+}
+
+// 選擇題：單選
+function selRadio(el, gid){
+  document.querySelectorAll('#'+gid+' .radio-option').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  el.querySelector('input').checked = true;
+}
+// Likert：單選
+function selLikert(btn){
+  btn.parentElement.querySelectorAll('.likert-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+// ===== 收集答案；缺答會標紅並捲到第一題 =====
+function collectAnswers(){
+  const vals = {};
+  let firstMissing = null;
+  document.querySelectorAll('.q-item.missing').forEach(el=>el.classList.remove('missing'));
+
+  POSTTEST.forEach(sec=>{
+    sec.items.forEach(item=>{
+      if(sec.type==='mc'){
+        const sel = document.querySelector(`#mc-${item.id} input:checked`);
+        if(sel) vals[item.id] = sel.value;
+        else if(!firstMissing){ firstMissing = document.getElementById('qi-'+item.id); firstMissing.classList.add('missing'); }
+      } else {
+        const sel = document.querySelector(`.likert-btn.selected[data-id="${item.id}"]`);
+        if(sel) vals[item.id] = parseInt(sel.dataset.val);
+        else if(!firstMissing){ firstMissing = document.getElementById('qi-'+item.id); firstMissing.classList.add('missing'); }
+      }
+    });
+  });
+
+  if(firstMissing){ firstMissing.scrollIntoView({behavior:'smooth',block:'center'}); return null; }
+  return vals;
+}
+
+// ===== 確認式送出：成功才跳完成頁；失敗保留答案、可重送 =====
+function submitPosttest(){
+  const vals = collectAnswers();
+  if(!vals) return; // 有缺答，停在原頁
+
+  // UI：進入「送出中」狀態
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  document.getElementById('status-fail').classList.remove('show');
+  document.getElementById('sending-mask').style.display = 'block';
+
+  // 組成後端認得的格式：data.studentId + data.data.posttest
+  // 後端 writePosttest 會用學號找到該生那一列，只覆寫後測欄位，不動基本資料/前測/階段
+  const payload = {
+    type: 'posttest',
+    studentId: currentId,
+    data: { studentId: currentId, posttest: vals }
+  };
+
+  // 用 fetch + URLSearchParams（與現有 AI 呼叫相同、已驗證可跨網域讀回應）
+  fetch(SHEET_URL, {
+    method: 'POST',
+    body: new URLSearchParams({ data: JSON.stringify(payload) })
+  })
+  .then(r => r.text())
+  .then(raw => {
+    let res;
+    try { res = JSON.parse(raw); }
+    catch(e){ throw new Error('伺服器回應格式錯誤'); }
+    if(res.status === 'ok'){
+      // ✅ 確認伺服器寫入成功，才顯示完成
+      showPage('page-thankyou');
+    } else {
+      throw new Error(res.message || '伺服器回報失敗');
+    }
+  })
+  .catch(err => {
+    // ❌ 失敗：保留所有答案，顯示重送按鈕
+    console.error('送出失敗:', err);
+    document.getElementById('sending-mask').style.display = 'none';
+    document.getElementById('status-fail-detail').textContent =
+      '錯誤：' + err.message + '。請確認網路連線後按下方按鈕重送。您的答案都還在，不會消失。';
+    document.getElementById('status-fail').classList.add('show');
+    document.getElementById('status-fail').scrollIntoView({behavior:'smooth',block:'center'});
+    btn.disabled = false;
+  });
+}
+</script>
+</body>
+</html>
